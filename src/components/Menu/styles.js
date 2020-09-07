@@ -13,6 +13,8 @@ import { Link } from 'react-router-dom';
 
 import { devices } from '@/config/devices';
 
+import LogoSmall from '@/assets/logo-unicarioca-vertical.png';
+
 const drawerWidth = 80;
 
 export const MenuRoot = styled(Box)({
@@ -82,11 +84,13 @@ export const CustomDrawer = styled(Drawer)({
     transitionProperty: 'width',
     overflowX: 'hidden',
     width: drawerWidth,
-    '& .MuiTypography-root, #coder-mind-logo': {
+    '& .MuiTypography-root': {
       display: 'none',
     },
     '& #coder-mind-logo': {
-      width: 120,
+      background: `url(${LogoSmall}) center center no-repeat`,
+      backgroundSize: 36,
+      height: 36,
     },
     '&:hover': {
       '& .MuiButtonBase-root': {
@@ -95,7 +99,7 @@ export const CustomDrawer = styled(Drawer)({
       '& #logout-button': {
         justifyContent: 'center',
       },
-      '& .MuiTypography-root, #coder-mind-logo': {
+      '& .MuiTypography-root': {
         display: 'block',
         marginLeft: '.6rem',
       },

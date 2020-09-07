@@ -37,10 +37,10 @@ function AppBarMobile() {
           label="Artigos"
         />
         <ButtonMobileAppBar
-          onClick={() => setActiveLocation('/comments')}
-          isActive={getActiveLocation('/comments')}
-          icon="question_answer"
-          label="Comentários"
+          onClick={() => setActiveLocation('/themes')}
+          isActive={getActiveLocation('/themes')}
+          icon="bookmark"
+          label="Temas"
         />
         <ButtonMobileAppBar
           onClick={() => setActiveLocation('/my-account')}

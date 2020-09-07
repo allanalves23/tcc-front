@@ -17,8 +17,7 @@ import { connect } from 'react-redux';
 
 import { APP_VERSION, APP_BUILD, APP_DEPENDENCIES } from '@/config/dataProperties';
 
-import Logo from '@/assets/coder-mind-painelv1-preto.png';
-import LogoWhite from '@/assets/coder-mind-painelv1-branco.png';
+import LogoSmall from '@/assets/logo-unicarioca-vertical.png';
 
 import { CustomLink, CustomDialogContent } from './styles';
 
@@ -54,7 +53,7 @@ function MoreInfo(props) {
     >
       <DialogTitle id="alert-dialog-title">
         <Box width="100%" display="flex" justifyContent="center" alignItems="center">
-          <img src={isDarkTheme() ? LogoWhite : Logo} width="225px" alt="Coder Mind" />
+          <img src={LogoSmall} height="115  px" alt="Coder Mind" />
         </Box>
       </DialogTitle>
       <Divider />
@@ -98,22 +97,16 @@ function MoreInfo(props) {
               </Typography>
             </Box>
           </Box>
-          <Box mt={3} mb={1} width="100%" display="flex" justifyContent="center" alignItems="center">
-            <CustomLink to="/ticket">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={close}
-              >
-                Preciso de ajuda
-              </Button>
-            </CustomLink>
-          </Box>
         </Grid>
         <Box width="100%" display="flex" flexDirection="column" alignItems="center">
-          <Typography component="p" variant="body2" align="center">
-            &copy; Coder Mind &#38; Colaboradores | Licenciado sobre a licença BSD 3
-          </Typography>
+          <Box>
+            <Typography component="p" variant="body2" align="center">
+              Versão personalizada de &copy; Coder Mind &#38; Colaboradores
+            </Typography>
+            <Typography component="p" variant="body2" align="center">
+              Licenciado sobre a licença BSD 3
+            </Typography>
+          </Box>
           <a
             href="https://opensource.org/licenses/BSD-3-Clause"
             target="_blank"

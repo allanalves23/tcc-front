@@ -1,7 +1,6 @@
 {
-  "name": "coder-mind-panel",
+  "name": "tcc-front",
   "version": "2.0.2",
-  "description": "Coder Mind Panel",
   "author": "Allan Wanderley Alves",
   "license": "BSD-3-Clause",
   "private": true,

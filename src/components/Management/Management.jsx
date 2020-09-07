@@ -10,9 +10,7 @@ import { connect } from 'react-redux';
 import { scrollToTop } from '@/shared/index';
 
 import Header from '../Header';
-import ShortcutSection from './ShortcutSection';
 import ThemesAndCategories from './ThemesAndCategories';
-import SchedulerDefinitions from './SchedulerDefinitions';
 import Settings from './Settings';
 import FloatingButton from '../Buttons/FloatingButton';
 
@@ -20,12 +18,6 @@ function Management(props) {
   const { user } = { ...props };
 
   const [hideHelp, setHideHelp] = useState(false);
-
-  function closeHideHelp() {
-    const payload = { hideHelp: true };
-    localStorage.setItem('management-help', JSON.stringify(payload));
-    setHideHelp(true);
-  }
 
   function goToTheTop() {
     scrollToTop();
@@ -52,13 +44,7 @@ function Management(props) {
         description="Configure propriedades da aplicação: como temas e categorias de artigos, Sincronizador e outras configurações"
         icon="settings"
       />
-      { user && user.tagAdmin && !hideHelp
-        && <ShortcutSection closeHideHelp={closeHideHelp} />
-      }
       <ThemesAndCategories user={user} />
-      { user && user.tagAdmin
-        && <SchedulerDefinitions />
-      }
       { user.tagAdmin && <Grid item xs={12}><Divider /></Grid>}
 
       { user && user.tagAdmin

@@ -7,7 +7,6 @@ import {
   ButtonBase,
   Paper,
   FormControl,
-  Container,
   InputLabel,
 } from '@material-ui/core';
 
@@ -17,6 +16,7 @@ import { COLOR_APP, COLOR_APP_HOVER } from '@/config/dataProperties';
 import { devices } from '@/config/devices';
 
 import { Link } from 'react-router-dom';
+import BgImg from '@/assets/bg-login-unicarioca.jpg';
 
 export const GridPresentation = styled(Grid)({
   display: 'flex',
@@ -27,8 +27,7 @@ export const GridPresentation = styled(Grid)({
   width: '100vw',
   color: '#fff',
   fontWeight: 700,
-  backgroundColor: '#8a05be', /* fallback for old browsers */
-  background: 'linear-gradient(+40deg, rgb(169, 78, 249), rgb(116, 29, 150))', /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: `url(${BgImg}) center center no-repeat`,
   padding: '0px 15px',
   '& h1': {
     textAlign: 'center',
@@ -53,30 +52,6 @@ export const AuthSection = styled(Paper)({
   flexDirection: 'column',
   width: '100%',
   height: '100vh',
-});
-
-export const RedeemAccountContainer = styled(Container)({
-  backgroundColor: '#FFFFFF',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: (props) => (props.option === 'menu' || props.response ? 'center' : 'flex-start'),
-  flexDirection: 'column',
-  minHeight: '100vh',
-  width: '100%',
-  maxWidth: '100%',
-  padding: 24,
-  color: '#000',
-  margin: 0,
-});
-
-export const RedeemAccountFormControl = styled(FormControl)({
-  [devices.mobileLarge]: {
-    paddingBottom: (props) => (props.option !== 'menu' ? 100 : 0),
-  },
-});
-
-export const RedeemAccountTextField = styled(TextField)({
-  margin: '5px 0',
 });
 
 export const LogoArea = styled(Box)({

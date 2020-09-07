@@ -5,7 +5,7 @@ export function standard(theme) {
     palette: {
       type: theme,
       primary: {
-        main: '#8a05be',
+        main: '#d92f44',
       },
       secondary: {
         main: '#f44336',

@@ -16,12 +16,9 @@ import {
 
 import HideOnScroll from '@/components/HideOnScroll.jsx';
 import AboutSystem from '@/components/AboutSystem.jsx';
-import CommentsNotifications from '@/components/Comments/UnreadComments.jsx';
-import TicketsNotifications from '@/components/Tickets/ManageTickets/UnreadedTickets.jsx';
 import ThemeSwitcher from '@/components/Menu/ThemeSwitcher.jsx';
 
-import LogoBlack from '@/assets/coder-mind-painelv1-preto.png';
-import LogoWhite from '@/assets/coder-mind-painelv1-branco.png';
+import Logo from '@/assets/logo-unicarioca.png';
 
 import {
   CustomAppBar,
@@ -40,10 +37,6 @@ function AppBar(props) {
   } = props;
 
   const [anchorMenu, setAnchorMenu] = useState(null);
-
-  function isDarkTheme() {
-    return theme === 'dark';
-  }
 
   function openMenu(event) {
     setAnchorMenu(event.currentTarget);
@@ -64,7 +57,7 @@ function AppBar(props) {
         <Toolbar>
           <CustomLink to="/">
             <img
-              src={isDarkTheme() ? LogoWhite : LogoBlack}
+              src={Logo}
               width="130"
               alt="Coder Mind"
             />
@@ -75,10 +68,6 @@ function AppBar(props) {
               && (
                 <AppBarItems display="flex" alignItems="center">
                   <ThemeSwitcher />
-                  <CommentsNotifications />
-                  { user.tagAdmin
-                    && <TicketsNotifications />
-                  }
                   <AboutSystem />
                   <CustomAvatar
                     onClick={openMenu}
@@ -146,18 +135,6 @@ function AppBar(props) {
                   </CustomLink>
                 )
               }
-            <CustomLink to="/ticket" onClick={closeMenu}>
-              <MenuItem>
-                <Box display="flex" alignItems="center">
-                  <Icon color="action">
-                    feedback
-                  </Icon>
-                  <Typography component="span" variant="body2">
-                    Ajuda
-                  </Typography>
-                </Box>
-              </MenuItem>
-            </CustomLink>
             <MenuItem onClick={logout}>
               <Box display="flex" alignItems="center">
                 <Icon color="action">

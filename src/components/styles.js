@@ -75,7 +75,7 @@ export const searchThemeStyle = (props) => ({
   control: (provided, state) => ({
     ...provided,
     backgroundColor: props.theme === 'dark' ? '#424242' : '#fff', // #424242 equal to `dark theme`
-    borderColor: state.isFocused ? '#8a05be' : `${props.theme === 'dark' ? '#fff' : 'rgba(0,0,0,.42)'}`, // rgba(0,0,0,.42) equal to default `TextField` border color
+    borderColor: state.isFocused ? '#d92f44' : `${props.theme === 'dark' ? '#fff' : 'rgba(0,0,0,.42)'}`, // rgba(0,0,0,.42) equal to default `TextField` border color
     boxShadow: state.isFocused ? `0 0 0 1px ${COLOR_APP}` : 'none',
     '&:hover': {
       borderColor: state.isFocused ? COLOR_APP : `${props.theme === 'dark' ? '#fff' : 'rgba(0,0,0,.42)'}`,

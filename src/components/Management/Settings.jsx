@@ -24,8 +24,7 @@ function Settings() {
           <Typography variant="h6" component="h3">Gerenciamento</Typography>
         </Box>
         <Typography variant="body2" component="span">
-          Gerencie usuários da plataforma,
-          visualize e responda a tickets de atendimento aos autores da plataforma.
+          Gerencie usuários da plataforma.
         </Typography>
       </Box>
       <Box width="100%" display="flex" flexWrap="wrap" alignItems="center">
@@ -53,40 +52,6 @@ function Settings() {
             <CardActions>
               <Box width="100%" ml={2} mr={2}>
                 <FakeLink to="/users">
-                  <Button
-                    color="primary"
-                    icon="exit_to_app"
-                    text="Acessar"
-                  />
-                </FakeLink>
-              </Box>
-            </CardActions>
-          </CustomCard>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <CustomCard>
-            <CardContent>
-              <Box id="tickets" display="flex" alignItems="center">
-                <Box mr={1} display="flex" alignItems="center">
-                  <Icon>
-                    email
-                  </Icon>
-                </Box>
-                <Box display="flex" alignItems="center">
-                  <Typography variant="h6" component="h4">
-                    Tickets
-                  </Typography>
-                </Box>
-              </Box>
-              <Typography component="p" variant="body2">
-                Visualize, responda, mantenha respostas e
-                veja atividades relacionadas a tickets.
-                Sendo o meio de comunicação entre os usuários e a Coder Mind.
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Box width="100%" ml={2} mr={2}>
-                <FakeLink to="/tickets">
                   <Button
                     color="primary"
                     icon="exit_to_app"

@@ -28,10 +28,10 @@ export const SAUDATION_LOADING_MSG = 'Carregando, por favor aguarde...';
 export const SIMPLE_ERROR_MSG = 'Ocorreu um erro desconhecido, se persistir reporte';
 export const ERROR_MSG_CUSTOM = 'Ops, parece que ocorreu um erro. Tente recarregar a página, se persistir tente novamente mais tarde';
 
-export const COLOR_APP = '#8a05be';
-export const COLOR_APP_HOVER = 'rgba(138, 5, 190, .8)';
-export const COLOR_APP_LIGHT = 'rgba(138, 5, 190,.2)';
-export const COLOR_APP_ULTRA_LIGHT = 'rgba(138, 5, 190, 0.04)';
+export const COLOR_APP = '#d92f44';
+export const COLOR_APP_HOVER = 'rgba(217, 47, 68, .8)';
+export const COLOR_APP_LIGHT = 'rgba(217, 47, 68, .2)';
+export const COLOR_APP_ULTRA_LIGHT = 'rgba(217, 47, 68, 0.04)';
 
 export const CAPTCHA_SITE_KEY = process.env.REACT_APP_SITE_KEY_CAPTCHA;
 /*

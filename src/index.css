@@ -14,15 +14,15 @@ body {
 }
 
 label.Mui-focused{
-  color: #8a05be !important;
+  color: #d92f44 !important;
 }
 
 .Mui-focused fieldset{
-  border-color: #8a05be !important;
+  border-color: #d92f44 !important;
 }
 
 .MuiInput-underline:after{
-  border-bottom-color: #8a05be !important;
+  border-bottom-color: #d92f44 !important;
 }
 
 .loading-app-area{
@@ -35,7 +35,7 @@ label.Mui-focused{
 .coder-mind{
   font-family: 'Offside', cursive !important;
   font-size: 10rem;
-  color: #8a05be;
+  color: #d92f44;
   margin: 0;
   text-align: center;
 }
@@ -43,7 +43,7 @@ label.Mui-focused{
 .gestao{
   font-family: 'Dancing Script', cursive;
 
-  color: #8a05be;
+  color: #d92f44;
   font-size: 7rem;
   margin: 0;
 }

@@ -5,8 +5,6 @@ import {
   Grid,
   Box,
   LinearProgress,
-  Button,
-  Typography,
   useMediaQuery,
 } from '@material-ui/core';
 
@@ -20,14 +18,12 @@ import Recaptcha from 'react-google-invisible-recaptcha';
 import { CAPTCHA_SITE_KEY } from '@/config/dataProperties';
 
 import { devices } from '@/config/devices';
-import RedeemAccount from '@/components/Authentications/RedeemAccount.jsx';
 import CustomButtonBase from '@/components/Authentications/AuthButton.jsx';
 import PasswordField from '@/components/PasswordField.jsx';
 
 import { defineErrorMsg } from '@/config/backend';
 
-import LogoBlack from '@/assets/coder-mind-painelv1-preto.png';
-import LogoClean from '@/assets/Logo-coder-mind.png';
+import Logo from '@/assets/logo-unicarioca.png';
 
 import { bindActionCreators } from 'redux';
 import { setUser as defineUser } from '@/redux/user/userActions';
@@ -55,7 +51,6 @@ function Auth(props) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rescuePassword, setRescuePassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [error, setError] = useState(null);
@@ -65,11 +60,6 @@ function Auth(props) {
   const recaptchaRef = useRef(null);
 
   const history = useHistory();
-
-  function toogleRescuePassword() {
-    setError('');
-    setRescuePassword(!rescuePassword);
-  }
 
   function resolve(event) {
     event.preventDefault();
@@ -151,95 +141,70 @@ function Auth(props) {
       {redirect
           && <Redirect to="/" />
       }
-      { !rescuePassword
-          && (
-            <GridPresentation item xs={12} md={4}>
-              <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-                <img src={LogoClean} alt="Coder Mind" />
-                <Typography component="h2" variant="h5">Gerêncie artigos mais rápido que o deploy semanal.</Typography>
-                <Box display="flex" alignItems="center" flexDirection="column" mt={2} mb={2}>
-                  <SpecialButton onClick={authFormFocus} color="inherit" variant="outlined" fullWidth>Já tenho uma conta</SpecialButton>
-                </Box>
-              </Box>
-            </GridPresentation>
-          )
-      }
-      <Grid item xs={12} md={!rescuePassword ? 8 : 12}>
-        { !rescuePassword
-            && (
-              <AuthSection>
-                { loading && <LinearProgress color="primary" />}
-                <LogoArea error={error}>
-                  <img src={LogoBlack} alt="Painel Coder Mind" className="logo-img" />
-                </LogoArea>
-                <FormArea>
-                  <form onSubmit={resolve} className="custom-form">
-                    <AuthLabel>E-mail</AuthLabel>
-                    <AuthTextField
-                      variant="outlined"
-                      size="small"
-                      onChange={handleChange(setEmail)}
-                      inputProps={{ autoComplete: 'email', id: 'coder-mind-username' }}
-                    />
-                    <AuthLabel>Senha</AuthLabel>
-                    <CustomFormControl>
-                      <PasswordField
-                        inputId="cm-password"
-                        variant="outlined"
-                        size="small"
-                        inputAutoComplete="password"
-                        value={password}
-                        onChange={handleChange(setPassword)}
-                      />
-                    </CustomFormControl>
-                    <Recaptcha
-                      sitekey={CAPTCHA_SITE_KEY}
-                      ref={defineRef}
-                      onResolved={((token) => setRecaptchaToken(token))}
-                      style={{ zIndex: 1 }}
-                      onError={() => captchaError()}
-                      onExpired={() => captchaError()}
-                      locale="pt-br"
-                    />
-                    { Boolean(error)
-                      && (
-                        <CustomAlert severity="warning">
-                          {error}
-                        </CustomAlert>
-                      )
-                    }
-                    <SubmitArea item xs={12}>
-                      <CustomButtonBase
-                        type="submit"
-                        onClick={resolve}
-                        fullWidth
-                        disabledIcon
-                        severity="primary"
-                        loading={loading}
-                        text={loading ? 'Entrando...' : 'Entrar'}
-                      />
-                    </SubmitArea>
-                    <Box>
-                      <Button
-                        size="small"
-                        variant="text"
-                        color="primary"
-                        onClick={toogleRescuePassword}
-                      >
-                        Não consegue acessar sua conta?
-                      </Button>
-                    </Box>
-                  </form>
-                </FormArea>
-              </AuthSection>
-            )
-        }
+      <GridPresentation item xs={12} md={4}>
+        <Box display="flex" flexDirection="column" height="60vh" justifyContent="flex-end" alignItems="center">
+          <Box display="flex" alignItems="center" flexDirection="column" mt={2} mb={2}>
+            <SpecialButton onClick={authFormFocus} color="inherit" variant="outlined" fullWidth>Já tenho uma conta</SpecialButton>
+          </Box>
+        </Box>
+      </GridPresentation>
+      <Grid item xs={12} md={8}>
+        <AuthSection>
+          { loading && <LinearProgress color="primary" />}
+          <LogoArea error={error}>
+            <img src={Logo} alt="Painel Coder Mind" className="logo-img" />
+          </LogoArea>
+          <FormArea>
+            <form onSubmit={resolve} className="custom-form">
+              <AuthLabel>E-mail</AuthLabel>
+              <AuthTextField
+                variant="outlined"
+                size="small"
+                onChange={handleChange(setEmail)}
+                inputProps={{ autoComplete: 'email', id: 'coder-mind-username' }}
+              />
+              <AuthLabel>Senha</AuthLabel>
+              <CustomFormControl>
+                <PasswordField
+                  inputId="cm-password"
+                  variant="outlined"
+                  size="small"
+                  inputAutoComplete="password"
+                  value={password}
+                  onChange={handleChange(setPassword)}
+                />
+              </CustomFormControl>
+              <Recaptcha
+                sitekey={CAPTCHA_SITE_KEY}
+                ref={defineRef}
+                onResolved={((token) => setRecaptchaToken(token))}
+                style={{ zIndex: 1 }}
+                onError={() => captchaError()}
+                onExpired={() => captchaError()}
+                locale="pt-br"
+              />
+              { Boolean(error)
+                && (
+                  <CustomAlert severity="warning">
+                    {error}
+                  </CustomAlert>
+                )
+              }
+              <SubmitArea item xs={12}>
+                <CustomButtonBase
+                  type="submit"
+                  onClick={resolve}
+                  fullWidth
+                  disabledIcon
+                  severity="primary"
+                  loading={loading}
+                  text={loading ? 'Entrando...' : 'Entrar'}
+                />
+              </SubmitArea>
+            </form>
+          </FormArea>
+        </AuthSection>
       </Grid>
-      { rescuePassword
-            && (
-              <RedeemAccount back={() => toogleRescuePassword()} />
-            )
-        }
     </Box>
 
   );

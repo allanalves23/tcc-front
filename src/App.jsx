@@ -38,16 +38,10 @@ import Themes from './components/Themes/Themes';
 import Management from './components/Management/Management';
 import Error from './components/Errors/Error';
 import Auth from './components/Authentications/Auth';
-import RedeemAccount from './components/Authentications/FormRedeemAccount';
-import ConfirmEmail from './components/Authentications/FormConfirmEmail';
-import RemoveAccount from './components/Authentications/FormRemoveAccount';
-import Ticket from './components/Tickets/SendTickets/Ticket';
-import Tickets from './components/Tickets/ManageTickets/Tickets';
 import RouteNotFound from './components/NotFound/RouteNotFound';
 import Users from './components/Users/Management/Users';
 import UserForm from './components/Users/Management/UserForm';
 import Categories from './components/Categories/Categories';
-import CommentList from './components/Comments/CommentList';
 import Articles from './components/Articles/Articles';
 import Article from './components/Articles/Article/Article';
 import MyAccount from './components/Users/MyAccount/MyAccount';
@@ -154,11 +148,6 @@ function App(props) {
                     <Switch>
                       <Route path="/" exact component={Articles} />
                       <Route path="/auth" exact component={Auth} />
-                      <Route path="/redeem-account" exact component={RedeemAccount} />
-                      <Route path="/remove-account" exact component={RemoveAccount} />
-                      <Route path="/ticket" exact component={Ticket} />
-                      <Route path="/tickets" exact component={Tickets} />
-                      <Route path="/confirm-email" exact component={ConfirmEmail} />
                       <Route path="/user" exact component={UserForm} />
                       <Route path="/user/:id" exact component={UserForm} />
                       <Route path="/users" exact component={Users} />
@@ -168,7 +157,6 @@ function App(props) {
                       <Route path="/themes" exact component={Themes} />
                       <Route path="/categories" exact component={Categories} />
                       <Route path="/my-account" exact component={MyAccount} />
-                      <Route path="/comments" exact component={CommentList} />
                       <Route path="/error" exact component={Error} />
                       <Route component={RouteNotFound} />
                     </Switch>
