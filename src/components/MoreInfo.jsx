@@ -19,7 +19,7 @@ import { APP_VERSION, APP_BUILD, APP_DEPENDENCIES } from '@/config/dataPropertie
 
 import LogoSmall from '@/assets/logo-unicarioca-vertical.png';
 
-import { CustomLink, CustomDialogContent } from './styles';
+import { CustomDialogContent } from './styles';
 
 function MoreInfo(props) {
   const {
