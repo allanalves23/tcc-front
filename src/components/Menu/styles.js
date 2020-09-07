@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 
 import { devices } from '@/config/devices';
 
-import LogoSmall from '@/assets/logo-unicarioca-vertical.png';
+import LogoSmall from '@/assets/favicon.png';
 
 const drawerWidth = 80;
 
