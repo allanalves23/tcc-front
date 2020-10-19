@@ -3,6 +3,7 @@
 [![code-style-airbnb](https://badgen.net/badge/codestyle/airbnb/ff5a5f.svg?icon=airbnb&color=green)](https://github.com/airbnb/javascript)
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-blue.svg?style=flat-square)](#contributors)
 ![license-BS3](https://img.shields.io/badge/license-BSD%203-green)
+[![Build status](https://dev.azure.com/allanalves23/allanalves23/_apis/build/status/TCC-FRONT)](https://dev.azure.com/allanalves23/allanalves23/_build/latest?definitionId=2)
 
 ## Trabalho de conclusão de curso - Instituição Unicarioca de Ensino Superior
 
