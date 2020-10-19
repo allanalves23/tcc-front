@@ -202,14 +202,18 @@ function Articles(props) {
         const url = `/artigos?query=${query}&page=${page}&limit=${limit}&op=all`;
         setLoading(true);
 
-        await axios(url, { cancelToken: source.token }).then((res) => {
-          setReload(false);
+        await axios(url, { cancelToken: source.token })
+          .then((res) => {
+            setReload(false);
 
-          setArticles(res.data.articles);
-          setError(res.data.error);
-          setCount(res.data.count);
-          setLimit(res.data.limit);
-        });
+            setArticles(res.data);
+            setError(res.data.error);
+            setCount(res.data.count);
+            setLimit(res.data.limit);
+          })
+          .catch(() => {
+            setReload(false);
+          });
 
         setLoading(false);
       } catch (err) {
