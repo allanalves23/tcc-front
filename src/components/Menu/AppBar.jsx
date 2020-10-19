@@ -123,7 +123,7 @@ function AppBar(props) {
             { user && true
                 && (
                   <CustomLink to="/management" onClick={closeMenu}>
-                    <MenuItem>
+                    <MenuItem disabled>
                       <Box display="flex" alignItems="center">
                         <Icon color="action">
                           settings
