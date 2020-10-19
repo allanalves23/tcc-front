@@ -23,7 +23,6 @@ function AuthButton(props) {
     severity,
   } = props;
 
-
   return (
     <CustomButtonBase
       severity={severity}
@@ -61,7 +60,7 @@ AuthButton.propTypes = {
     'button',
   ]),
   disabled: PropTypes.bool,
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   disabledIcon: PropTypes.bool,
   loading: PropTypes.bool,
   iconSize: PropTypes.oneOf([
@@ -94,6 +93,7 @@ AuthButton.defaultProps = {
   text: '',
   fullWidth: false,
   severity: null,
+  onClick: () => null,
 };
 
 export default AuthButton;

@@ -66,12 +66,12 @@ function Themes(props) {
 
   function changeQueryValue(term) {
     setQuery(term);
-    setSkip(1);
+    setSkip(0);
     setReload(true);
   }
 
   async function changeSkip(event, p) {
-    setSkip(p + 1);
+    setSkip(p);
     setReload(true);
     scrollToTop();
   }
@@ -183,7 +183,7 @@ function Themes(props) {
               />
               )
             }
-            { true
+            { false
               && (
                 <HudLink to="/management">
                   <CustomButton

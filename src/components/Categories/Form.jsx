@@ -65,12 +65,12 @@ function CategoryForm(props) {
   async function loadThemes(query) {
     let themes = [];
     try {
-      const url = `/temas?query=${query}`;
+      const url = `/temas?termo=${query}`;
       const response = await axios(url);
 
-      themes = response.data.themes.map((elem) => ({
+      themes = response.data.map((elem) => ({
         ...elem,
-        label: elem.name,
+        label: elem.nome,
         value: elem.id,
       })) || [];
     } catch (err) {
@@ -88,15 +88,6 @@ function CategoryForm(props) {
     }, 1000);
   }
 
-  function formatData() {
-    const data = { ...category };
-
-    data.themeId = data.theme ? data.theme.id : null;
-    delete data.theme;
-
-    return data;
-  }
-
   async function save() {
     if (loading) return;
 
@@ -104,8 +95,7 @@ function CategoryForm(props) {
     const url = method === 'post' ? '/categorias' : `/categorias/${category.id}`;
     setLoading(true);
 
-    const data = formatData(category);
-    await axios[method](url, data).then(() => {
+    await axios[method](url, category).then(() => {
       callToast(success('Operação realizada com sucesso'));
       close(true);
     }).catch((err) => {
@@ -121,16 +111,16 @@ function CategoryForm(props) {
     function getCategory() {
       if (!propCategory.id) {
         setCategory({
-          name: '', alias: '', theme: null, description: '',
+          nome: '', tema: null, descricao: '',
         });
       } else {
-        const currentTheme = propCategory.theme || {};
+        const currentTheme = propCategory.tema || {};
         // Set label and value properties to display in async-select component
         const currentCategory = {
           ...propCategory,
-          theme: {
+          tema: {
             ...currentTheme,
-            label: currentTheme.name,
+            label: currentTheme.nome,
             value: currentTheme.id,
           },
         };
@@ -162,43 +152,33 @@ function CategoryForm(props) {
         <Box display="flex" alignItems="center" flexWrap="wrap">
           <CustomTextField
             label="Categoria"
-            error={Boolean(error.name)}
-            helperText={error.name
+            error={Boolean(error.nome)}
+            helperText={error.nome
               ? error.msg : ''}
             onBlur={() => setError({})}
-            value={category.name}
-            onChange={(event) => handleChange(event, 'name')}
+            value={category.nome}
+            onChange={(event) => handleChange(event, 'nome')}
           />
-          <CustomTextField
-            label="Apelido"
-            error={Boolean(error.alias)}
-            helperText={error.alias
-              ? error.msg
-              : ''}
-            onBlur={() => setError({})}
-            value={category.alias}
-            onChange={(event) => handleChange(event, 'alias')}
-          />
-          <Box margin="1rem" width="100%">
+          <Box margin="1rem" width="50%">
             <CustomAsyncSelect
               label="Tema"
-              value={category.theme}
-              onChange={(value) => handleChangeSelect(value, 'theme')}
+              value={category.tema}
+              onChange={(value) => handleChangeSelect(value, 'tema')}
               loadOptions={getThemes}
             />
           </Box>
           <CustomTextField
             label="Descrição"
-            error={Boolean(error.description)}
-            helperText={error.description
+            error={Boolean(error.descricao)}
+            helperText={error.descricao
               ? error.msg
               : ''}
             onBlur={() => setError({})}
             fullWidth
-            value={category.description}
+            value={category.descricao}
             multiline
             rows={3}
-            onChange={(event) => handleChange(event, 'description')}
+            onChange={(event) => handleChange(event, 'descricao')}
           />
         </Box>
       </DialogContent>

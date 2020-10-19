@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -13,9 +13,6 @@ import { Redirect, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import axios from 'axios';
-
-import Recaptcha from 'react-google-invisible-recaptcha';
-import { CAPTCHA_SITE_KEY } from '@/config/dataProperties';
 
 import { devices } from '@/config/devices';
 import CustomButtonBase from '@/components/Authentications/AuthButton.jsx';
@@ -54,28 +51,10 @@ function Auth(props) {
   const [loading, setLoading] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [error, setError] = useState(null);
-  const [recaptchaToken, setRecaptchaToken] = useState('');
 
   const matches = useMediaQuery(devices.mobileLarge);
-  const recaptchaRef = useRef(null);
 
   const history = useHistory();
-
-  function resolve(event) {
-    event.preventDefault();
-    if (loading) return;
-
-    setLoading(true);
-
-    if (error) recaptchaRef.current.reset();
-
-    recaptchaRef.current.execute();
-  }
-
-  function captchaError() {
-    recaptchaRef.current.reset();
-    setError('Ocorreu um erro no recaptcha, se persistir reporte');
-  }
 
   function handleChange(setAttr) {
     return (event) => {
@@ -92,8 +71,28 @@ function Auth(props) {
     }
   }
 
-  function defineRef(ref) {
-    recaptchaRef.current = ref;
+  async function signIn(e) {
+    e.preventDefault();
+    setLoading(true);
+
+    const user = {
+      userID,
+      password,
+    };
+
+    const url = '/auth';
+
+    await axios.post(url, user)
+      .then((res) => {
+        localStorage.setItem('user', JSON.stringify({ accessToken: res.data.accessToken, user: res.data.user }));
+        setUser(res.data);
+        setMenu(true);
+        history.push('/');
+      }).catch((err) => {
+        const msg = defineErrorMsg(err);
+        setError(msg);
+        setLoading(false);
+      });
   }
 
   useEffect(() => {
@@ -104,37 +103,6 @@ function Auth(props) {
 
     verifyUser();
   }, [redirect, appError]);
-
-  useEffect(() => {
-    async function signIn() {
-      const response = recaptchaToken;
-
-      setRecaptchaToken('');
-
-      const user = {
-        userID,
-        password,
-        response,
-      };
-
-      const url = '/auth';
-
-      await axios.post(url, user).then((res) => {
-        localStorage.setItem('user', JSON.stringify({ accessToken: res.data.accessToken, user: res.data.user }));
-        setUser(res.data);
-        setMenu(true);
-        history.push('/');
-      }).catch((err) => {
-        const msg = defineErrorMsg(err);
-        setError(msg);
-        setLoading(false);
-      });
-    }
-
-    if (recaptchaToken) {
-      signIn();
-    }
-  }, [userID, loading, password, recaptchaToken, setMenu, setUser, history]);
 
   return (
     <Box display="flex" alignItems="center" flexWrap="wrap" height="100%">
@@ -155,7 +123,7 @@ function Auth(props) {
             <img src={Logo} alt="Painel Coder Mind" className="logo-img" />
           </LogoArea>
           <FormArea>
-            <form onSubmit={resolve} className="custom-form">
+            <form onSubmit={signIn} className="custom-form">
               <AuthLabel>E-mail</AuthLabel>
               <AuthTextField
                 variant="outlined"
@@ -174,15 +142,6 @@ function Auth(props) {
                   onChange={handleChange(setPassword)}
                 />
               </CustomFormControl>
-              <Recaptcha
-                sitekey={CAPTCHA_SITE_KEY}
-                ref={defineRef}
-                onResolved={((token) => setRecaptchaToken(token))}
-                style={{ zIndex: 1 }}
-                onError={() => captchaError()}
-                onExpired={() => captchaError()}
-                locale="pt-br"
-              />
               { Boolean(error)
                 && (
                   <CustomAlert severity="warning">
@@ -193,7 +152,6 @@ function Auth(props) {
               <SubmitArea item xs={12}>
                 <CustomButtonBase
                   type="submit"
-                  onClick={resolve}
                   fullWidth
                   disabledIcon
                   severity="primary"

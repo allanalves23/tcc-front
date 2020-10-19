@@ -53,9 +53,9 @@ function Categories(props) {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
-  const [page, setPage] = useState(1);
-  const [count, setCount] = useState(0);
-  const [limit, setLimit] = useState(DEFAULT_LIMIT);
+  const [skip, setSkip] = useState(0);
+  const [count] = useState(0);
+  const [take, setTake] = useState(DEFAULT_LIMIT);
   const [error, setError] = useState(false);
   const [categorySelected, setCategorySelected] = useState({});
   const [reload, setReload] = useState(true);
@@ -64,12 +64,12 @@ function Categories(props) {
 
   function changeQueryValue(term) {
     setQuery(term);
-    setPage(1);
+    setSkip(0);
     setReload(true);
   }
 
   async function changePage(event, p) {
-    setPage(p + 1);
+    setSkip(p);
     setReload(true);
     scrollToTop();
   }
@@ -93,7 +93,7 @@ function Categories(props) {
 
       if (stack && stack.removed) {
         if (stack.newPage) {
-          setPage(stack.newPage);
+          setSkip(stack.newPage);
         }
         setReload(true);
       }
@@ -117,7 +117,7 @@ function Categories(props) {
   async function defineLimit(event) {
     const newLimit = parseInt(event.target.value, 10);
 
-    setLimit(newLimit);
+    setTake(newLimit);
     setReload(true);
   }
 
@@ -127,15 +127,13 @@ function Categories(props) {
     async function searchCategories() {
       try {
         setLoading(true);
-        const url = `/categorias?page=${page}&query=${query}&limit=${limit}`;
+        const url = `/categorias?skip=${skip}&termo=${query}&take=${take}`;
 
         await axios(url, { cancelToken: source.token })
           .then(async (res) => {
             setReload(false);
 
             setCategories(res.data);
-            setCount(res.data.count);
-            setLimit(res.data.limit);
             setError(false);
           });
 
@@ -153,7 +151,7 @@ function Categories(props) {
     }
 
     return () => source.cancel();
-  }, [page, query, limit, loading, error, categories, reload]);
+  }, [skip, query, take, loading, error, categories, reload]);
 
   return (
     <Container id="component">
@@ -168,7 +166,7 @@ function Categories(props) {
         propCategory={categorySelected}
         categoriesQuantity={categories.length}
         onClose={(stack) => handleOpenRemoveConfirm(false, stack)}
-        page={page}
+        skip={skip}
       />
       <Box mb={3}>
         <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" width="100%">
@@ -182,7 +180,7 @@ function Categories(props) {
               />
               )
             }
-            { true
+            { false
               && (
                 <HudLink to="/management">
                   <CustomButton
@@ -231,7 +229,7 @@ function Categories(props) {
                       bookmark_border
                     </TableIcon>
                     <Typography component="span" variant="body1">
-                      Apelido
+                      Descrição
                     </Typography>
                   </Box>
                 </TableCell>
@@ -263,13 +261,13 @@ function Categories(props) {
               {categories.map((elem) => (
                 <TableRow key={elem.id}>
                   <TableCell scope="name">
-                    {elem.name}
+                    {elem.nome}
                   </TableCell>
                   <TableCell scope="alias">
-                    {elem.alias}
+                    {elem.descricao}
                   </TableCell>
                   <TableCell scope="theme">
-                    {elem.theme ? elem.theme.name : ''}
+                    {elem.tema ? elem.tema.nome : ''}
                   </TableCell>
                   {true && (
                   <TableCell scope="id">
@@ -295,10 +293,10 @@ function Categories(props) {
                   rowsPerPageOptions={OPTIONS_LIMIT}
                   colSpan={3}
                   count={count}
-                  rowsPerPage={limit}
+                  rowsPerPage={take}
                   labelRowsPerPage={LIMIT_LABEL}
                   labelDisplayedRows={DISPLAYED_ROWS}
-                  page={page - 1}
+                  page={skip}
                   onChangePage={changePage}
                   onChangeRowsPerPage={defineLimit}
                 />

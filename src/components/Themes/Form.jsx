@@ -98,6 +98,7 @@ function ThemeForm(props) {
           <CustomTextField
             label="Tema"
             error={Boolean(error.nome)}
+            fullWidth
             helperText={error.nome
               ? error.msg : ''}
             onBlur={() => setError({})}
@@ -112,7 +113,7 @@ function ThemeForm(props) {
               : ''}
             onBlur={() => setError({})}
             fullWidth
-            value={theme.descricao}
+            value={theme.descricao || ''}
             multiline
             rows={3}
             onChange={(event) => handleChange(event, 'descricao')}
