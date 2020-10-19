@@ -63,7 +63,7 @@ function MoreInfo(props) {
             <Box>
               <Typography variant="body1" component="p">
                 Usuário autenticado:&nbsp;
-                <strong>{user.name}</strong>
+                <strong>{user.userName}</strong>
               </Typography>
               <Typography variant="body1" component="p">
                 Perfil do usuário:&nbsp;

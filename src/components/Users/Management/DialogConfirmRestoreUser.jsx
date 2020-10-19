@@ -62,7 +62,7 @@ function ConfirmRestore(props) {
       <DialogContent>
         <DialogContentText>
           Deseja realmente resturar o usuário
-          {` ${user.name} (${user.email}) ?`}
+          {` ${user.userName} (${user.email}) ?`}
         </DialogContentText>
       </DialogContent>
       <DialogActions>

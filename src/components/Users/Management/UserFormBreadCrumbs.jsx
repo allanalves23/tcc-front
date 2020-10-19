@@ -25,7 +25,7 @@ function UserFormBreadCrumbs(props) {
         index + 1 === steps.length
           ? (
             <Typography component="span" variant="body2">
-              {user._id ? 'Editar usuário' : 'Criar usuário'}
+              {user.userID ? 'Editar usuário' : 'Criar usuário'}
             </Typography>
           )
           : (

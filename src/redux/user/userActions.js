@@ -1,8 +1,8 @@
 import { setAuthToken } from '@/config/axios';
 
 export function setUser(user) {
-  if (user && user.token) {
-    setAuthToken(user.token);
+  if (user && user.accessToken) {
+    setAuthToken(user.accessToken);
   }
 
   return {

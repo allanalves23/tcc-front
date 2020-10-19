@@ -42,7 +42,7 @@ function MyAccount(props) {
     const source = axios.CancelToken.source();
 
     async function getUser() {
-      const id = user._id;
+      const id = user.userID;
       const url = `/users/${id}`;
       setLoading(true);
 
@@ -62,7 +62,7 @@ function MyAccount(props) {
     if (!userState && !error) getUser();
 
     return () => source.cancel();
-  }, [user._id, userState, error]);
+  }, [user.userID, userState, error]);
 
   useEffect(() => {
     scrollToTop();

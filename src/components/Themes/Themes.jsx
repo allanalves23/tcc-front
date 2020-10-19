@@ -133,12 +133,12 @@ function Themes(props) {
       try {
         setLoading(true);
 
-        const url = `/themes?page=${page}&query=${query}&limit=${limit}`;
+        const url = `/temas?skip=${page}&termo=${query}&take=${limit}`;
 
         await axios(url, { cancelToken: source.token }).then((res) => {
           setReload(false);
 
-          setThemes(res.data.themes);
+          setThemes(res.data);
           setCount(res.data.count);
           setLimit(res.data.limit);
           setError(false);

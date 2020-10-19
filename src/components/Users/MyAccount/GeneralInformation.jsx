@@ -85,7 +85,7 @@ function GeneralInformation(props) {
   async function save() {
     setSaving(true);
     try {
-      const url = `/users/${user._id}`;
+      const url = `/users/${user.userID}`;
 
       const data = await formatData();
 
@@ -114,7 +114,7 @@ function GeneralInformation(props) {
     const img = image.target.files[0];
     if (!img) return callToast(info('Selecione uma imagem'));
 
-    const id = user._id;
+    const id = user.userID;
 
     const formData = new FormData();
     formData.append('profilePhoto', img);
@@ -181,7 +181,7 @@ function GeneralInformation(props) {
   async function resendEmail() {
     if (resendingEmail) return;
 
-    const id = user._id;
+    const id = user.userID;
     const url = `/users/emails/${id}`;
 
     setResendingEmail(true);
@@ -199,7 +199,7 @@ function GeneralInformation(props) {
   async function cancelChangeEmail() {
     if (cancelingChangeEmail) return;
 
-    const id = user._id;
+    const id = user.userID;
     const url = `/users/emails/${id}`;
 
     setCancelingChangeEmail(true);
@@ -298,7 +298,7 @@ function GeneralInformation(props) {
                       haveImg={Boolean(user.profilePhoto)}
                       size={150}
                       round
-                      name={user.name}
+                      name={user.userName}
                       src={userState.profilePhoto || null}
                       alt="Foto de perfil"
                       onClick={showConfirmRemoveImage}

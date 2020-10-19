@@ -78,7 +78,7 @@ function UserForm(props) {
     if (saving || loading) return;
 
     // The User logged is trying remove their own account
-    if (userState._id === user._id) {
+    if (userState._id === user.userID) {
       callToast(info("Para remover sua conta acesse a opção 'Meus dados' e 'Configurações'"));
       return;
     }

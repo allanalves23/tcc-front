@@ -32,7 +32,7 @@ function AboutSystem(props) {
       <Tooltip
         title={(
           <Typography component="p" variant="body2">
-            {`Olá ${user.name}, seu nivel de acesso atual é: ${user.tagAdmin ? 'Administrador' : 'Autor'}`}
+            {`Olá ${user.userName}, seu nivel de acesso atual é: ${user.tagAdmin ? 'Administrador' : 'Autor'}`}
           </Typography>
         )}
       >

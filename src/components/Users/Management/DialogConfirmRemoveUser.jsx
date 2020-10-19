@@ -62,7 +62,7 @@ function ConfirmRemoveUser(props) {
         <DialogContentText>
           Tem certeza que deseja remover o usuário
           {' '}
-          {` ${user.name} (${user.email}) ?`}
+          {` ${user.userName} (${user.email}) ?`}
         </DialogContentText>
       </DialogContent>
       <DialogActions>

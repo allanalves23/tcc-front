@@ -74,7 +74,7 @@ function UserFormHud(props) {
           onClick={save}
           disabled={isSaving}
         />
-        { user._id
+        { user.userID
         && (
           <CustomButton
             color="secondary"
@@ -86,7 +86,7 @@ function UserFormHud(props) {
           />
         )
         }
-        { user._id
+        { user.userID
         && (
           <CustomButton
             color="default"
@@ -118,7 +118,7 @@ function UserFormHud(props) {
             <Typography component="span" variant="body1">
               Notificar
               {' '}
-              {user._id ? 'mudanças' : 'cadastro'}
+              {user.userID ? 'mudanças' : 'cadastro'}
               :
               {' '}
               {sendEmail ? 'ativado' : 'desativado'}
@@ -132,14 +132,14 @@ function UserFormHud(props) {
               }}
               align="center"
             >
-              {user._id
+              {user.userID
                 ? 'Se ativo o usuário receberá uma notificação de mudanças no cadastro.'
                 : 'Se ativo, o usuário receberá um e-mail de notificação contendo as credenciais de acesso ao painel'}
             </Typography>
           </Box>
         </MenuItem>
-        { user._id && <MenuItem onClick={changePassAndHideMenu}>Alterar senha</MenuItem>}
-        { user._id && <MenuItem onClick={removeAndHideMenu}>Remover conta</MenuItem>}
+        { user.userID && <MenuItem onClick={changePassAndHideMenu}>Alterar senha</MenuItem>}
+        { user.userID && <MenuItem onClick={removeAndHideMenu}>Remover conta</MenuItem>}
       </Menu>
     </FormHudButtons>
   );

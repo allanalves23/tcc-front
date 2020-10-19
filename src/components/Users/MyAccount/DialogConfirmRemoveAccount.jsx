@@ -36,7 +36,7 @@ function RemoveAccount(props) {
   async function remove() {
     setRemoving(true);
 
-    const url = `/users/configs/${user._id}`;
+    const url = `/users/configs/${user.userID}`;
 
     const payload = { password };
 

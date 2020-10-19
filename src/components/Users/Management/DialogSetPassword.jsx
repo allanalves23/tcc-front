@@ -44,7 +44,7 @@ function DialogSetPassword(props) {
     if (evt) evt.preventDefault();
 
     setSaving(true);
-    const url = `/users/configs/${user._id}`;
+    const url = `/users/configs/${user.userID}`;
 
     await axios.post(url, { password }).then(() => {
       callToast(success('Senha alterada com sucesso!'));

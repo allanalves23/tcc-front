@@ -33,7 +33,7 @@ function RemoveImage(props) {
   const [removing, setRemoving] = useState(false);
 
   async function remove() {
-    const id = user._id;
+    const id = user.userID;
     const url = `/users/img/${id}`;
 
     setRemoving(true);

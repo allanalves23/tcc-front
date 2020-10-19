@@ -125,7 +125,7 @@ function Users(props) {
     if (loading) return;
 
     // The User logged is trying remove their own account
-    if (userNotYetSelected._id === user._id) {
+    if (userNotYetSelected._id === user.userID) {
       callToast(info("Para remover sua conta acesse a opção 'Meus dados' e 'Configurações'"));
       return;
     }

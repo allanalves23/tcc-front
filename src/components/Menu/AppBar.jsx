@@ -64,7 +64,7 @@ function AppBar(props) {
           </CustomLink>
         </Toolbar>
         <Box>
-          { user && user.name
+          { user && user.userName
               && (
                 <AppBarItems display="flex" alignItems="center">
                   <ThemeSwitcher />
@@ -72,7 +72,7 @@ function AppBar(props) {
                   <CustomAvatar
                     onClick={openMenu}
                     color="#888"
-                    name={user.name}
+                    name={user.userName}
                     size={35}
                     round="30px"
                     src={user.profilePhoto}

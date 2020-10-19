@@ -49,7 +49,7 @@ function Auth(props) {
     setMenu,
   } = props;
 
-  const [email, setEmail] = useState('');
+  const [userID, setUserID] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [redirect, setRedirect] = useState(false);
@@ -112,15 +112,15 @@ function Auth(props) {
       setRecaptchaToken('');
 
       const user = {
-        email,
+        userID,
         password,
         response,
       };
 
       const url = '/auth';
 
-      await axios.post(url, user).then(async (res) => {
-        localStorage.setItem('user', JSON.stringify({ token: res.data.token }));
+      await axios.post(url, user).then((res) => {
+        localStorage.setItem('user', JSON.stringify({ token: res.data.accessToken, user: res.data.user }));
         setUser(res.data);
         setMenu(true);
         history.push('/');
@@ -134,7 +134,7 @@ function Auth(props) {
     if (recaptchaToken) {
       signIn();
     }
-  }, [email, loading, password, recaptchaToken, setMenu, setUser, history]);
+  }, [userID, loading, password, recaptchaToken, setMenu, setUser, history]);
 
   return (
     <Box display="flex" alignItems="center" flexWrap="wrap" height="100%">
@@ -160,7 +160,7 @@ function Auth(props) {
               <AuthTextField
                 variant="outlined"
                 size="small"
-                onChange={handleChange(setEmail)}
+                onChange={handleChange(setUserID)}
                 inputProps={{ autoComplete: 'email', id: 'coder-mind-username' }}
               />
               <AuthLabel>Senha</AuthLabel>

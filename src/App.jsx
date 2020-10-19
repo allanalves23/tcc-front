@@ -15,7 +15,6 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 
-import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -61,7 +60,7 @@ function App(props) {
     theme,
   } = props;
 
-  const themeConfig = standard(user && user._id ? theme : 'light');
+  const themeConfig = standard(user && user.userID ? theme : 'light');
 
   const [validatingToken, setValidatingToken] = useState(true);
   const [path, setPath] = useState('');
@@ -93,21 +92,26 @@ function App(props) {
   useEffect(() => {
     async function validateToken() {
       const token = await JSON.parse(localStorage.getItem('user'));
-
       if (token) {
-        const url = '/auth/logged';
-        await axios.post(url, token).then((res) => {
-          if (res.data.user) {
-            setUser(res.data);
-            setMenu(true);
-          } else {
-            localStorage.removeItem('user');
-            setUser(null);
-            setMenu(false);
-          }
-        }).catch(() => {
-          setError(true);
-        });
+        setUser(token);
+        setMenu(true);
+        // const url = '/auth/logged';
+        // await axios.post(url, token).then((res) => {
+        //   if (res.data.user) {
+        //     setUser(res.data);
+        //     setMenu(true);
+        //   } else {
+        //     localStorage.removeItem('user');
+        //     setUser(null);
+        //     setMenu(false);
+        //   }
+        // }).catch(() => {
+        //   setError(true);
+        // });
+      } else {
+        localStorage.removeItem('user');
+        setUser(null);
+        setMenu(false);
       }
 
       setValidatingToken(false);
@@ -132,7 +136,7 @@ function App(props) {
                     text={toast.msg}
                     closeToast={closeToast}
                   />
-                  { !user._id && validateRoutes()
+                  { !user.userID && validateRoutes()
                     && (
                       <Redirect to="/auth" />
                     )

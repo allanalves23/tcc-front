@@ -41,7 +41,7 @@ function RemoveConfirmation(props) {
   async function remove() {
     setLoading(true);
     const id = propTheme._id;
-    const url = `/themes/${id}`;
+    const url = `/temas/${id}`;
     let newPage = null;
     await axios
       .delete(url)

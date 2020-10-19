@@ -50,7 +50,7 @@ function ChangeMyPassword(props) {
   async function verifyPassword() {
     const url = '/auth/logged';
     const payload = {
-      _id: user._id,
+      _id: user.userID,
       password,
     };
 
@@ -72,7 +72,7 @@ function ChangeMyPassword(props) {
       secondField: confirmNewPass,
     };
 
-    const url = `/users/${user._id}`;
+    const url = `/users/${user.userID}`;
 
     setSaving(true);
 

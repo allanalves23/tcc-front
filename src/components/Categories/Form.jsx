@@ -65,7 +65,7 @@ function CategoryForm(props) {
   async function loadThemes(query) {
     let themes = [];
     try {
-      const url = `/themes?query=${query}`;
+      const url = `/temas?query=${query}`;
       const response = await axios(url);
 
       themes = response.data.themes.map((elem) => ({
@@ -224,7 +224,6 @@ CategoryForm.propTypes = {
 CategoryForm.defaultProps = {
   open: false,
 };
-
 
 const mapStateToProps = (state) => ({ toast: state.config });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);

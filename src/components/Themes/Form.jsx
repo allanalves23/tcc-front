@@ -55,7 +55,7 @@ function ThemeForm(props) {
     if (loading) return;
 
     const method = theme._id ? 'put' : 'post';
-    const url = method === 'post' ? '/themes' : `/themes/${theme._id}`;
+    const url = method === 'post' ? '/temas' : `/temas/${theme._id}`;
     setLoading(true);
 
     await axios[method](url, theme).then(() => {
@@ -151,7 +151,6 @@ ThemeForm.propTypes = {
 ThemeForm.defaultProps = {
   open: false,
 };
-
 
 const mapStateToProps = (state) => ({ toast: state.config });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
