@@ -67,7 +67,7 @@ function MoreInfo(props) {
               </Typography>
               <Typography variant="body1" component="p">
                 Perfil do usuário:&nbsp;
-                <strong>{user.tagAdmin ? 'Administrador' : 'Autor'}</strong>
+                <strong>{true ? 'Administrador' : 'Autor'}</strong>
               </Typography>
             </Box>
           </Box>

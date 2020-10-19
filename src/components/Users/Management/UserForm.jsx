@@ -78,7 +78,7 @@ function UserForm(props) {
     if (saving || loading) return;
 
     // The User logged is trying remove their own account
-    if (userState._id === user.userID) {
+    if (userState.id === user.userID) {
       callToast(info("Para remover sua conta acesse a opção 'Meus dados' e 'Configurações'"));
       return;
     }
@@ -142,8 +142,8 @@ function UserForm(props) {
   async function save() {
     if (saving) return;
 
-    const method = userState._id ? 'put' : 'post';
-    const url = method === 'post' ? `/users?sm=${sendEmail ? 'yes' : 'no'}` : `/users/${userState._id}?sm=${sendEmail ? 'yes' : 'no'}`;
+    const method = userState.id ? 'put' : 'post';
+    const url = method === 'post' ? `/users?sm=${sendEmail ? 'yes' : 'no'}` : `/users/${userState.id}?sm=${sendEmail ? 'yes' : 'no'}`;
 
     const data = await formatData();
 
@@ -230,7 +230,7 @@ function UserForm(props) {
               <Typography component="span" variant="body2">Usuários</Typography>
             </CustomLink>
             <Typography component="span" variant="body2">
-              {userState._id ? 'Editar usuário' : 'Cadastrar usuário'}
+              {userState.id ? 'Editar usuário' : 'Cadastrar usuário'}
             </Typography>
           </Breadcrumbs>
         </Box>
@@ -345,7 +345,7 @@ function UserForm(props) {
               />
             </CustomGrid>
             <Divider />
-            { !userState._id
+            { !userState.id
               && (
                 <CustomGrid item xs={12}>
                   <UserFormSection
@@ -363,7 +363,7 @@ function UserForm(props) {
                   />
                 </CustomGrid>
               )}
-              { userState._id
+              { userState.id
               && (
                 <CustomGrid item xs={12}>
                   <UserFormSection
@@ -373,7 +373,7 @@ function UserForm(props) {
                   />
                   <CustomTextField
                     label="Identificador (ID)"
-                    value={userState._id}
+                    value={userState.id}
                     disabled
                   />
                   <CustomTextField

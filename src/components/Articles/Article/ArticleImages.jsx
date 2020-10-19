@@ -100,7 +100,7 @@ function ArticleImages(props) {
     if (!img) return;
 
     setSavingImg(reason);
-    const id = article._id;
+    const id = article.id;
 
     const formData = new FormData();
     formData.append('image', img);
@@ -112,7 +112,7 @@ function ArticleImages(props) {
       },
     };
 
-    const url = `/articles/images/${id}?type=${reason}`;
+    const url = `/artigos/images/${id}?type=${reason}`;
 
     await axios.post(url, formData, config).then(async (res) => {
       callToast(success('Operação realizada com sucesso'));

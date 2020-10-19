@@ -32,12 +32,12 @@ function AboutSystem(props) {
       <Tooltip
         title={(
           <Typography component="p" variant="body2">
-            {`Olá ${user.userName}, seu nivel de acesso atual é: ${user.tagAdmin ? 'Administrador' : 'Autor'}`}
+            {`Olá ${user.userName}, seu nivel de acesso atual é: ${true ? 'Administrador' : 'Autor'}`}
           </Typography>
         )}
       >
         <IconButton onClick={openDialog}>
-          <FontAwesomeIcon icon={user.tagAdmin ? faCode : faBook} />
+          <FontAwesomeIcon icon={true ? faCode : faBook} />
         </IconButton>
       </Tooltip>
       <MoreInfo opened={dialog} user={user} closeDialog={closeDialog} />

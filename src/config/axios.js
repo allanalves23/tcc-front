@@ -28,7 +28,7 @@ const error = (err) => {
 export function setAuthToken(newToken) {
   const storage = JSON.parse(localStorage.getItem('user'));
 
-  const currentToken = storage ? storage.token : null;
+  const currentToken = storage ? storage.accessToken : null;
   const token = newToken || currentToken;
 
   if (token) {

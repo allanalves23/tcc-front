@@ -36,7 +36,7 @@ function RemoveArticleDialog(props) {
   }
 
   function remove() {
-    const url = `/articles/${article._id}`;
+    const url = `/artigos/${article.id}`;
 
     setLoading(true);
 

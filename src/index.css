@@ -32,6 +32,10 @@ label.Mui-focused{
   height: 100vh;
 }
 
+.disabled-link {
+  pointer-events: none;
+}
+
 .coder-mind{
   font-family: 'Offside', cursive !important;
   font-size: 10rem;

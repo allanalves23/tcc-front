@@ -32,9 +32,9 @@ function ConfirmRestore(props) {
   const [restoring, setRestoring] = useState(false);
 
   async function restore() {
-    const { _id } = user;
+    const { id } = user;
     setRestoring(true);
-    const url = `/users/configs/${_id}`;
+    const url = `/users/configs/${id}`;
 
     await axios.patch(url).then(() => {
       callToast(success('Usuário restaurado com sucesso'));

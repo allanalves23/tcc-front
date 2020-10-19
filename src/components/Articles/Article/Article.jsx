@@ -89,8 +89,8 @@ function Article(props) {
   }
 
   function changeState(newState) {
-    const { _id } = article;
-    const url = `/articles/${_id}?state=${newState}`;
+    const { id } = article;
+    const url = `/artigos/${id}?state=${newState}`;
 
     axios.patch(url).then(() => {
       callToast(success(defineChangeStateSuccessMsg(newState)));
@@ -125,7 +125,7 @@ function Article(props) {
   useEffect(() => {
     function isDiffCustomUri(firstArticle, secondArticle) {
       return firstArticle.customUri !== secondArticle.customUri
-        && firstArticle._id === secondArticle._id;
+        && firstArticle.id === secondArticle.id;
     }
 
     function changeLocalUri(currentArticle) {
@@ -135,7 +135,7 @@ function Article(props) {
     const source = axios.CancelToken.source();
 
     async function saveChanges() {
-      const url = `/articles/${article._id}`;
+      const url = `/artigos/${article.id}`;
 
       setIsSaving(true);
       try {
@@ -177,7 +177,7 @@ function Article(props) {
     async function getArticle() {
       try {
         const { key } = match.params;
-        const url = `/articles/${key}?type=customUri`;
+        const url = `/artigos/${key}?type=customUri`;
 
         setLoading(true);
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { userType, appTheme } from '@/types';
+import { appTheme } from '@/types';
 
 import {
   Container,
@@ -49,15 +49,14 @@ import {
 
 function Themes(props) {
   const {
-    user,
     theme,
   } = props;
 
   const [themes, setThemes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
-  const [page, setPage] = useState(1);
-  const [count, setCount] = useState(0);
+  const [skip, setSkip] = useState(0);
+  const [count] = useState(0);
   const [limit, setLimit] = useState(DEFAULT_LIMIT);
   const [error, setError] = useState(false);
   const [themeSelected, setThemeSelected] = useState({});
@@ -67,12 +66,12 @@ function Themes(props) {
 
   function changeQueryValue(term) {
     setQuery(term);
-    setPage(1);
+    setSkip(1);
     setReload(true);
   }
 
-  async function changePage(event, p) {
-    setPage(p + 1);
+  async function changeSkip(event, p) {
+    setSkip(p + 1);
     setReload(true);
     scrollToTop();
   }
@@ -95,8 +94,8 @@ function Themes(props) {
       setThemeSelected({});
 
       if (stack && stack.removed) {
-        if (stack.newPage) {
-          setPage(stack.newPage);
+        if (stack.newSkip) {
+          setSkip(stack.newSkip);
         }
         setReload(true);
       }
@@ -133,14 +132,12 @@ function Themes(props) {
       try {
         setLoading(true);
 
-        const url = `/temas?skip=${page}&termo=${query}&take=${limit}`;
+        const url = `/temas?skip=${skip}&termo=${query}&take=${limit}`;
 
         await axios(url, { cancelToken: source.token }).then((res) => {
           setReload(false);
 
           setThemes(res.data);
-          setCount(res.data.count);
-          setLimit(res.data.limit);
           setError(false);
         });
 
@@ -157,7 +154,7 @@ function Themes(props) {
       searchThemes();
     }
     return () => source.cancel();
-  }, [page, query, limit, loading, error, themes, reload]);
+  }, [skip, query, limit, loading, error, themes, reload]);
 
   return (
     <Container id="component">
@@ -172,12 +169,12 @@ function Themes(props) {
         themesQuantity={themes.length}
         onClose={(stack) => handleOpenRemoveConfirm(false, stack)}
         propTheme={themeSelected}
-        page={page}
+        skip={skip}
       />
       <Box mb={3}>
         <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" width="100%">
           <HudButtons>
-            { user.tagAdmin
+            { true
               && (
               <CustomButton
                 color="primary"
@@ -186,7 +183,7 @@ function Themes(props) {
               />
               )
             }
-            { user.tagAdmin
+            { true
               && (
                 <HudLink to="/management">
                   <CustomButton
@@ -235,11 +232,11 @@ function Themes(props) {
                       bookmark_border
                     </TableIcon>
                     <Typography component="span" variant="body1">
-                      Apelido
+                      Descrição
                     </Typography>
                   </Box>
                 </TableCell>
-                {user.tagAdmin && (
+                {true && (
                 <TableCell>
                   <Box display="flex" alignItems="center">
                     <TableIcon fontSize="small" color="action">
@@ -255,11 +252,11 @@ function Themes(props) {
             </TableHead>
             <TableBody>
               {themes.map((elem) => (
-                <TableRow key={elem._id}>
-                  <TableCell scope="name">{elem.name}</TableCell>
-                  <TableCell scope="alias">{elem.alias}</TableCell>
-                  {user.tagAdmin && (
-                  <TableCell scope="_id">
+                <TableRow key={elem.nome}>
+                  <TableCell scope="nome">{elem.nome}</TableCell>
+                  <TableCell scope="descricao">{elem.descricao}</TableCell>
+                  {true && (
+                  <TableCell scope="id">
                     <CustomIconButton
                       icon="edit"
                       color={theme === 'dark' ? 'inherit' : 'primary'}
@@ -285,11 +282,11 @@ function Themes(props) {
                   rowsPerPage={limit}
                   labelRowsPerPage={LIMIT_LABEL}
                   labelDisplayedRows={DISPLAYED_ROWS}
-                  page={page - 1}
+                  page={skip}
                   SelectProps={{
                     inputProps: { 'aria-label': 'Limite' },
                   }}
-                  onChangePage={changePage}
+                  onChangePage={changeSkip}
                   onChangeRowsPerPage={defineLimit}
                 />
               </TableRow>
@@ -303,7 +300,6 @@ function Themes(props) {
 }
 
 Themes.propTypes = {
-  user: userType.isRequired,
   theme: appTheme.isRequired,
 };
 

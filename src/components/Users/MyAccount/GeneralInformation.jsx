@@ -223,7 +223,7 @@ function GeneralInformation(props) {
   }
 
   useEffect(() => {
-    if (!userState._id) {
+    if (!userState.id) {
       const newUser = user;
 
       if (user.cellphone) {

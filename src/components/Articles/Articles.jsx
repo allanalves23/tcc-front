@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { userType } from '@/types';
 import { useHistory } from 'react-router-dom';
 
 import { Container, Icon } from '@material-ui/core';
@@ -26,7 +25,7 @@ import CreateArticleDialog from './CreateArticleDialog';
 import { TableWrapper } from './styles';
 
 function Articles(props) {
-  const { user, callToast } = props;
+  const { callToast } = props;
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -131,7 +130,7 @@ function Articles(props) {
       },
     ];
 
-    return user.tagAdmin ? adminColumns : authorColumns;
+    return true ? adminColumns : authorColumns;
   }
 
   function openCreateArticleDialog() {
@@ -163,9 +162,9 @@ function Articles(props) {
 
   function removeArticles(articlesToRemove) {
     const state = 'removed';
-    const url = '/articles';
+    const url = '/artigos';
 
-    const articlesId = articlesToRemove.map((elem) => elem._id);
+    const articlesId = articlesToRemove.map((elem) => elem.id);
 
     axios.put(url, { state, articlesId }).then(() => {
       const msg = `Artigo${articlesId.length > 1 ? 's' : ''} removido${articlesId.length > 1 ? 's' : ''} com sucesso`;
@@ -178,9 +177,9 @@ function Articles(props) {
   }
 
   function changeState(articlesToChange, state) {
-    const url = '/articles';
+    const url = '/artigos';
 
-    const articlesId = articlesToChange.map((elem) => elem._id);
+    const articlesId = articlesToChange.map((elem) => elem.id);
 
     axios.put(url, { state, articlesId }).then(() => {
       callToast(success('Operação realizada com sucesso'));
@@ -200,7 +199,7 @@ function Articles(props) {
 
     async function getArticles() {
       try {
-        const url = `/articles?query=${query}&page=${page}&limit=${limit}&op=all`;
+        const url = `/artigos?query=${query}&page=${page}&limit=${limit}&op=all`;
         setLoading(true);
 
         await axios(url, { cancelToken: source.token }).then((res) => {
@@ -315,7 +314,6 @@ function Articles(props) {
 }
 
 Articles.propTypes = {
-  user: userType.isRequired,
   callToast: PropTypes.func.isRequired,
 };
 

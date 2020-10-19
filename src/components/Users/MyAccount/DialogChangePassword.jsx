@@ -50,7 +50,7 @@ function ChangeMyPassword(props) {
   async function verifyPassword() {
     const url = '/auth/logged';
     const payload = {
-      _id: user.userID,
+      id: user.userID,
       password,
     };
 

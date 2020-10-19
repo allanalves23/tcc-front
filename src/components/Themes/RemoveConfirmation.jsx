@@ -27,7 +27,7 @@ function RemoveConfirmation(props) {
     onClose,
     propTheme,
     themesQuantity,
-    page,
+    skip,
     callToast,
     theme,
   } = props;
@@ -40,14 +40,14 @@ function RemoveConfirmation(props) {
 
   async function remove() {
     setLoading(true);
-    const id = propTheme._id;
+    const { id } = propTheme;
     const url = `/temas/${id}`;
     let newPage = null;
     await axios
       .delete(url)
       .then(() => {
         callToast(success('Operação realizada com sucesso'));
-        if (themesQuantity === 1) newPage = page - 1 === 0 ? 1 : page - 1;
+        if (themesQuantity === 1) newPage = skip === 0 ? 0 : skip - 1;
         close({ removed: true, newPage });
       })
       .catch((err) => {
@@ -103,7 +103,7 @@ RemoveConfirmation.propTypes = {
   onClose: PropTypes.func.isRequired,
   propTheme: themeType.isRequired,
   themesQuantity: PropTypes.number.isRequired,
-  page: PropTypes.number.isRequired,
+  skip: PropTypes.number.isRequired,
   callToast: PropTypes.func.isRequired,
   theme: appTheme.isRequired,
 };

@@ -66,7 +66,7 @@ function Configurations(props) {
 
   return (
     <Container>
-      { user.tagAdmin && (
+      { true && (
         <Box mb={2}>
           <Grid>
             <Box width="100%" mb={2}>

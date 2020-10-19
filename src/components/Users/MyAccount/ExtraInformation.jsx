@@ -80,7 +80,7 @@ function ExtraInformation(props) {
   async function save() {
     setSaving(true);
 
-    const url = `/users/${userState._id}`;
+    const url = `/users/${userState.id}`;
 
     const userToSave = formatUserToSave();
     await axios.patch(url, userToSave).then((res) => {
@@ -100,7 +100,7 @@ function ExtraInformation(props) {
   }
 
   useEffect(() => {
-    if (!userState._id) {
+    if (!userState.id) {
       setUserState({ ...user });
     }
   }, [user, userState]);

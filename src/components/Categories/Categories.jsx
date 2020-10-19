@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { userType, appTheme } from '@/types';
+import { appTheme } from '@/types';
 import {
   Container,
   Table,
@@ -47,7 +47,6 @@ import {
 
 function Categories(props) {
   const {
-    user,
     theme,
   } = props;
 
@@ -128,13 +127,13 @@ function Categories(props) {
     async function searchCategories() {
       try {
         setLoading(true);
-        const url = `/categories?page=${page}&query=${query}&limit=${limit}`;
+        const url = `/categorias?page=${page}&query=${query}&limit=${limit}`;
 
         await axios(url, { cancelToken: source.token })
           .then(async (res) => {
             setReload(false);
 
-            setCategories(res.data.categories);
+            setCategories(res.data);
             setCount(res.data.count);
             setLimit(res.data.limit);
             setError(false);
@@ -174,7 +173,7 @@ function Categories(props) {
       <Box mb={3}>
         <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" width="100%">
           <HudButtons>
-            { user.tagAdmin
+            { true
               && (
               <CustomButton
                 color="primary"
@@ -183,7 +182,7 @@ function Categories(props) {
               />
               )
             }
-            { user.tagAdmin
+            { true
               && (
                 <HudLink to="/management">
                   <CustomButton
@@ -246,7 +245,7 @@ function Categories(props) {
                     </Typography>
                   </Box>
                 </TableCell>
-                {user.tagAdmin && (
+                {true && (
                 <TableCell>
                   <Box display="flex" alignItems="center">
                     <TableIcon fontSize="small" color="action">
@@ -262,7 +261,7 @@ function Categories(props) {
             </TableHead>
             <TableBody>
               {categories.map((elem) => (
-                <TableRow key={elem._id}>
+                <TableRow key={elem.id}>
                   <TableCell scope="name">
                     {elem.name}
                   </TableCell>
@@ -272,8 +271,8 @@ function Categories(props) {
                   <TableCell scope="theme">
                     {elem.theme ? elem.theme.name : ''}
                   </TableCell>
-                  {user.tagAdmin && (
-                  <TableCell scope="_id">
+                  {true && (
+                  <TableCell scope="id">
                     <CustomIconButton
                       icon="edit"
                       color={theme === 'dark' ? 'inherit' : 'primary'}
@@ -314,7 +313,6 @@ function Categories(props) {
 }
 
 Categories.propTypes = {
-  user: userType.isRequired,
   theme: appTheme.isRequired,
 };
 

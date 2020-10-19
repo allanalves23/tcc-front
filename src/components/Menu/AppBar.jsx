@@ -42,7 +42,8 @@ function AppBar(props) {
     setAnchorMenu(event.currentTarget);
   }
 
-  function closeMenu() {
+  function closeMenu(e) {
+    e.preventDefault();
     setAnchorMenu(null);
   }
 
@@ -96,7 +97,7 @@ function AppBar(props) {
             onClose={closeMenu}
           >
             <CustomLink to="/my-account" onClick={closeMenu}>
-              <MenuItem>
+              <MenuItem disabled>
                 <Box display="flex" alignItems="center">
                   <Icon color="action">
                     person_outline
@@ -119,7 +120,7 @@ function AppBar(props) {
                 </Typography>
               </Box>
             </MenuItem>
-            { user && user.tagAdmin
+            { user && true
                 && (
                   <CustomLink to="/management" onClick={closeMenu}>
                     <MenuItem>

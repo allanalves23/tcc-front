@@ -11,9 +11,10 @@ const defineErrorMsg = (error) => {
   if (error.isAxiosError) {
     errorMsg = 'Ops, não conseguimos conectar ao servidor, tente novamente mais tarde!';
   }
-  if (error.response && error.response.data) {
-    if (typeof error.response.data === 'string') {
-      errorMsg = error.response.data;
+
+  if (error.response && error.response.data && error.response.data.Error) {
+    if (typeof error.response.data.Error === 'string') {
+      errorMsg = error.response.data.Error;
     } else {
       errorMsg = error.response.data.message || error.response.data.msg;
     }

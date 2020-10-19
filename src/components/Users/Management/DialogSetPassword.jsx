@@ -59,7 +59,7 @@ function DialogSetPassword(props) {
   }
 
   useEffect(() => {
-    if (!user || (user && !user.tagAdmin)) closeDialog();
+    if (!user || (user && !true)) closeDialog();
   }, [user, closeDialog]);
 
   return (

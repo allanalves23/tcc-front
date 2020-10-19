@@ -120,7 +120,7 @@ function Auth(props) {
       const url = '/auth';
 
       await axios.post(url, user).then((res) => {
-        localStorage.setItem('user', JSON.stringify({ token: res.data.accessToken, user: res.data.user }));
+        localStorage.setItem('user', JSON.stringify({ accessToken: res.data.accessToken, user: res.data.user }));
         setUser(res.data);
         setMenu(true);
         history.push('/');

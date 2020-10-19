@@ -12,7 +12,7 @@ export const userType = shape({
   publicProfile: bool,
   platformStats: bool,
   firstLogin: bool,
-  _id: string,
+  id: number,
   name: string,
   email: string,
   gender: string,
@@ -47,7 +47,7 @@ export const userType = shape({
 });
 
 export const themeType = shape({
-  _id: string,
+  id: number,
   name: string,
   alias: string,
   description: string,
@@ -55,7 +55,7 @@ export const themeType = shape({
 });
 
 export const categoryType = shape({
-  _id: string,
+  id: number,
   name: string,
   alias: string,
   description: string,
@@ -67,15 +67,15 @@ export const categoryType = shape({
 });
 
 export const articleType = shape({
-  _id: string,
+  id: number,
 });
 
 export const ticketNotificationType = shape({
-  _id: string,
+  id: number,
   content: shape({
     readed: bool,
     type: string,
-    userId: string,
+    userId: number,
     email: string,
     msg: string,
     createdAt: oneOfType([
@@ -90,11 +90,11 @@ export const ticketNotificationType = shape({
 });
 
 export const ticketType = shape({
-  _id: string,
+  id: number,
 });
 
 export const commentType = shape({
-  _id: string,
+  id: number,
   userName: string,
   userEmail: string,
   message: string,
@@ -118,7 +118,7 @@ export const commentType = shape({
 });
 
 export const commentSettingsType = shape({
-  userId: string,
+  userId: number,
   type: oneOf([
     'all',
     'not-readed',

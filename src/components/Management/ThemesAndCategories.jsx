@@ -23,7 +23,7 @@ const ThemesAndCategories = (props) => {
           <Typography variant="h6" component="h3">Temas & Categorias</Typography>
         </Box>
         <Typography variant="body2" component="span">
-          {user && user.tagAdmin
+          {user && true
             ? 'Visualize, altere e remova temas e categorias para artigos.' : 'Visualize temas e categorias para artigos.'
           }
         </Typography>
@@ -44,7 +44,7 @@ const ThemesAndCategories = (props) => {
                   </Typography>
                 </Box>
               </Box>
-              { user && user.tagAdmin
+              { user && true
                   && (
                     <Typography component="p" variant="body2">
                       Temas estão relacionados aos artigos,
@@ -82,7 +82,7 @@ const ThemesAndCategories = (props) => {
                   </Typography>
                 </Box>
               </Box>
-              { user && user.tagAdmin
+              { user && true
                 && (
                   <Typography component="p" variant="body2">
                     Categorias estão relacionados aos artigos,
@@ -106,7 +106,7 @@ const ThemesAndCategories = (props) => {
           </CustomCard>
         </Grid>
       </Box>
-      { user && user.tagAdmin
+      { user && true
           && (
           <Box width="100%" mt={2}>
             <Divider />

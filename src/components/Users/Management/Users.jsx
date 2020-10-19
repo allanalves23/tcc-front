@@ -125,7 +125,7 @@ function Users(props) {
     if (loading) return;
 
     // The User logged is trying remove their own account
-    if (userNotYetSelected._id === user.userID) {
+    if (userNotYetSelected.id === user.userID) {
       callToast(info("Para remover sua conta acesse a opção 'Meus dados' e 'Configurações'"));
       return;
     }
@@ -312,7 +312,7 @@ function Users(props) {
                 </TableHead>
                 <TableBody>
                   {users.map((elem) => (
-                    <TableRow key={elem._id} hover>
+                    <TableRow key={elem.id} hover>
                       <TableCell scope="name">
                         {elem.name}
                       </TableCell>
@@ -328,8 +328,8 @@ function Users(props) {
                           text={elem.tagAdmin ? 'Administrador' : 'Autor'}
                         />
                       </TableCell>
-                      <TableCell scope="_id">
-                        <CustomLink to={`/user/${elem._id}`}>
+                      <TableCell scope="id">
+                        <CustomLink to={`/user/${elem.id}`}>
                           <CustomIconButton
                             icon="edit"
                             color={theme === 'dark' ? 'inherit' : 'primary'}

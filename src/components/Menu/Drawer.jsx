@@ -22,7 +22,6 @@ import {
 
 function DrawerMenu(props) {
   const {
-    user,
     logout,
   } = props;
 
@@ -87,9 +86,11 @@ function DrawerMenu(props) {
           </CustomLink>
           <CustomLink
             to="/my-account"
+            className="disabled-link"
           >
             <CustomListItem
               button
+              disabled
             >
               <Box display="flex" alignItems="center">
                 <Icon color="action">
@@ -101,12 +102,14 @@ function DrawerMenu(props) {
               </Box>
             </CustomListItem>
           </CustomLink>
-          { user.tagAdmin && (
+          { true && (
             <CustomLink
               to="/management"
+              className="disabled-link"
             >
               <CustomListItem
                 button
+                disabled
               >
                 <Box display="flex" alignItems="center">
                   <Icon color="action">

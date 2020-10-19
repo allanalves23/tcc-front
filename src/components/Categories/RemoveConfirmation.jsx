@@ -40,8 +40,8 @@ function RemoveConfirmation(props) {
 
   async function remove() {
     setLoading(true);
-    const id = propCategory._id;
-    const url = `/categories/${id}`;
+    const id = propCategory.id;
+    const url = `/categorias/${id}`;
     let newPage = null;
     await axios
       .delete(url)

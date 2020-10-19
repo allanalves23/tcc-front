@@ -71,7 +71,7 @@ function CategoryForm(props) {
       themes = response.data.themes.map((elem) => ({
         ...elem,
         label: elem.name,
-        value: elem._id,
+        value: elem.id,
       })) || [];
     } catch (err) {
       callToast(error('Ocorreu um erro ao obter os temas, se persistir reporte'));
@@ -91,7 +91,7 @@ function CategoryForm(props) {
   function formatData() {
     const data = { ...category };
 
-    data.themeId = data.theme ? data.theme._id : null;
+    data.themeId = data.theme ? data.theme.id : null;
     delete data.theme;
 
     return data;
@@ -100,8 +100,8 @@ function CategoryForm(props) {
   async function save() {
     if (loading) return;
 
-    const method = category._id ? 'put' : 'post';
-    const url = method === 'post' ? '/categories' : `/categories/${category._id}`;
+    const method = category.id ? 'put' : 'post';
+    const url = method === 'post' ? '/categorias' : `/categorias/${category.id}`;
     setLoading(true);
 
     const data = formatData(category);
@@ -119,7 +119,7 @@ function CategoryForm(props) {
 
   useEffect(() => {
     function getCategory() {
-      if (!propCategory._id) {
+      if (!propCategory.id) {
         setCategory({
           name: '', alias: '', theme: null, description: '',
         });
@@ -131,7 +131,7 @@ function CategoryForm(props) {
           theme: {
             ...currentTheme,
             label: currentTheme.name,
-            value: currentTheme._id,
+            value: currentTheme.id,
           },
         };
 
@@ -154,7 +154,7 @@ function CategoryForm(props) {
       <Box mb={1} p={2}>
         <Box display="flex" alignItems="center">
           <Icon style={{ marginRight: 3, color: '#444' }}>category</Icon>
-          <Typography variant="h5" component="h1">{category._id ? 'Atualizar categoria' : 'Inserir categoria'}</Typography>
+          <Typography variant="h5" component="h1">{category.id ? 'Atualizar categoria' : 'Inserir categoria'}</Typography>
         </Box>
         <Divider style={{ marginTop: 10 }} />
       </Box>

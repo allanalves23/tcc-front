@@ -123,7 +123,7 @@ function ArticleMoreOptions(props) {
       validateChanges();
 
       const articleChanges = {
-        _id: article._id,
+        id: article.id,
         socialRepository,
         socialRepositoryType,
         socialVideo,
@@ -170,7 +170,7 @@ function ArticleMoreOptions(props) {
   }, [isSaved]);
 
   useEffect(() => {
-    if (article._id && !mounted) {
+    if (article.id && !mounted) {
       setMounted(true);
       setSocialRepository(article.socialRepository);
       setSocialRepositoryType(article.socialRepositoryType);

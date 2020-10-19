@@ -44,7 +44,7 @@ function RemoveArticleDialog(props) {
   }
 
   async function remove() {
-    const url = `/articles/images/${article._id}?type=${imageType}`;
+    const url = `/articles/images/${article.id}?type=${imageType}`;
 
     setLoading(true);
 

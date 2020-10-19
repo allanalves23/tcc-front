@@ -320,7 +320,7 @@ function RemovedUsers(props) {
                 </TableHead>
                 <TableBody>
                   {users.map((elem) => (
-                    <TableRow key={elem._id} hover>
+                    <TableRow key={elem.id} hover>
                       <TableCell scope="name">
                         {elem.name}
                       </TableCell>

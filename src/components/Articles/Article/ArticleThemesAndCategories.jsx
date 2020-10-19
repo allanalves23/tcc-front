@@ -65,7 +65,7 @@ function ArticleThemesAndCategories(props) {
       themes = response.data.themes.map((elem) => ({
         ...elem,
         label: elem.name,
-        value: elem._id,
+        value: elem.id,
       })) || [];
     } catch (err) {
       callToast(error('Ocorreu um erro ao obter os temas, se persistir reporte'));
@@ -75,13 +75,13 @@ function ArticleThemesAndCategories(props) {
   }
 
   function themeIsDefined() {
-    return (theme && theme._id);
+    return (theme && theme.id);
   }
 
   function saveChanges() {
     const articleChanged = {
-      themeId: theme && theme._id,
-      categoryId: category && category._id,
+      themeId: theme && theme.id,
+      categoryId: category && category.id,
     };
 
     onSaveChanges(articleChanged);
@@ -91,13 +91,13 @@ function ArticleThemesAndCategories(props) {
   async function loadCategories(query) {
     let categories = [];
     try {
-      const url = `/categories/${query}/themes/${theme._id}`;
+      const url = `/categories/${query}/themes/${theme.id}`;
       const response = await axios(url);
 
       categories = response.data.map((elem) => ({
         ...elem,
         label: elem.name,
-        value: elem._id,
+        value: elem.id,
       })) || [];
     } catch (err) {
       callToast(error('Ocorreu um erro ao obter as categorias, se persistir reporte'));
@@ -112,13 +112,13 @@ function ArticleThemesAndCategories(props) {
         setTheme(article.theme ? {
           ...article.theme,
           label: article.theme.name,
-          value: article.theme._id,
+          value: article.theme.id,
         } : null);
 
         setCategory(article.category ? {
           ...article.category,
           label: article.category.name,
-          value: article.category._id,
+          value: article.category.id,
         } : null);
       }
       setMounted(true);

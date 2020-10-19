@@ -46,7 +46,7 @@ function CreateArticleDialog(props) {
 
 
   async function createArticle() {
-    const url = '/articles';
+    const url = '/artigos';
     setLoading(true);
     await axios.post(url, { title: articleTitle }).then((res) => {
       const articleCreated = res.data;

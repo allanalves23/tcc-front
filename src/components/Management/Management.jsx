@@ -45,9 +45,9 @@ function Management(props) {
         icon="settings"
       />
       <ThemesAndCategories user={user} />
-      { user.tagAdmin && <Grid item xs={12}><Divider /></Grid>}
+      { true && <Grid item xs={12}><Divider /></Grid>}
 
-      { user && user.tagAdmin
+      { user && true
         && <Settings />
       }
     </Container>

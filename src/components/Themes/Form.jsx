@@ -54,8 +54,8 @@ function ThemeForm(props) {
   async function save() {
     if (loading) return;
 
-    const method = theme._id ? 'put' : 'post';
-    const url = method === 'post' ? '/temas' : `/temas/${theme._id}`;
+    const method = theme.id ? 'put' : 'post';
+    const url = method === 'post' ? '/temas' : `/temas/${theme.id}`;
     setLoading(true);
 
     await axios[method](url, theme).then(() => {
@@ -72,7 +72,7 @@ function ThemeForm(props) {
 
   useEffect(() => {
     if (open) {
-      if (!propTheme._id) setTheme({ name: '', alias: '', description: '' });
+      if (!propTheme.id) setTheme({ nome: '', descricao: '' });
       else setTheme(propTheme);
     }
   }, [open, propTheme]);
@@ -89,7 +89,7 @@ function ThemeForm(props) {
       <Box mb={3} p={2}>
         <Box display="flex" alignItems="center">
           <Icon style={{ marginRight: 3, color: '#444' }}>bookmark</Icon>
-          <Typography variant="h5" component="h1">{theme._id ? 'Atualizar tema' : 'Inserir tema'}</Typography>
+          <Typography variant="h5" component="h1">{theme.id ? 'Atualizar tema' : 'Inserir tema'}</Typography>
         </Box>
         <Divider style={{ marginTop: 10 }} />
       </Box>
@@ -97,35 +97,25 @@ function ThemeForm(props) {
         <Box display="flex" alignItems="center" flexWrap="wrap">
           <CustomTextField
             label="Tema"
-            error={Boolean(error.name)}
-            helperText={error.name
+            error={Boolean(error.nome)}
+            helperText={error.nome
               ? error.msg : ''}
             onBlur={() => setError({})}
-            value={theme.name}
-            onChange={(event) => handleChange(event, 'name')}
-          />
-          <CustomTextField
-            label="Apelido"
-            error={Boolean(error.alias)}
-            helperText={error.alias
-              ? error.msg
-              : ''}
-            onBlur={() => setError({})}
-            value={theme.alias}
-            onChange={(event) => handleChange(event, 'alias')}
+            value={theme.nome}
+            onChange={(event) => handleChange(event, 'nome')}
           />
           <CustomTextField
             label="Descrição"
-            error={Boolean(error.description)}
-            helperText={error.description
+            error={Boolean(error.descricao)}
+            helperText={error.descricao
               ? error.msg
               : ''}
             onBlur={() => setError({})}
             fullWidth
-            value={theme.description}
+            value={theme.descricao}
             multiline
             rows={3}
-            onChange={(event) => handleChange(event, 'description')}
+            onChange={(event) => handleChange(event, 'descricao')}
           />
         </Box>
       </DialogContent>
