@@ -90,11 +90,26 @@ function Article(props) {
 
   function changeState(newState) {
     const { id } = article;
-    const url = `/artigos/${id}?state=${newState}`;
+    let httpMethod = 'put';
+    const url = `/artigos/${id}/publicacoes`;
 
-    axios.patch(url).then(() => {
+    switch (newState) {
+      case 'published': {
+        httpMethod = 'put';
+        break;
+      }
+      case 'inactivated': {
+        httpMethod = 'delete';
+        break;
+      }
+      default: {
+        httpMethod = 'patch';
+      }
+    }
+
+    axios[httpMethod](url).then((response) => {
       callToast(success(defineChangeStateSuccessMsg(newState)));
-      setArticle({ ...article, state: newState });
+      setArticle({ ...response.data });
     }).catch((err) => {
       const msg = defineErrorMsg(err);
       callToast(error(msg));
@@ -110,10 +125,7 @@ function Article(props) {
     setSettingsReason(null);
   }
 
-  function openSettings(reason = null) {
-    if (typeof reason === 'string') {
-      setSettingsReason(reason);
-    }
+  function openSettings() {
     setShowSettings(true);
   }
 
@@ -165,7 +177,7 @@ function Article(props) {
 
   useEffect(() => {
     if (enableChanges) {
-      setArticleChanged({ content: debounceArticleContent });
+      setArticleChanged({ conteudo: debounceArticleContent });
       setShouldSaveChanges(true);
     }
   }, [debounceArticleContent, enableChanges]);
@@ -184,7 +196,7 @@ function Article(props) {
         await axios(url, { cancelToken: source.token }).then((res) => {
           setReload(false);
           setArticle(res.data);
-          setArticleContent(res.data.content);
+          setArticleContent(res.data.conteudo);
         });
 
         setLoading(false);

@@ -10,8 +10,6 @@ import { scrollToTop } from '@/shared/index';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
-import { success, error as toastError } from '@/config/toasts';
-import { defineErrorMsg } from '@/config/backend';
 
 import MaterialTable from 'material-table';
 
@@ -24,15 +22,13 @@ import CreateArticleDialog from './CreateArticleDialog';
 
 import { TableWrapper } from './styles';
 
-function Articles(props) {
-  const { callToast } = props;
-
+function Articles() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [articles, setArticles] = useState([]);
   const [query, setQuery] = useState('');
   const [limit, setLimit] = useState(10);
-  const [count, setCount] = useState(0);
+  const [count] = useState(0);
   const [page, setPage] = useState(1);
   const [reload, setReload] = useState(true);
   const [createArticleDialog, setCreateArticleDialog] = useState(false);
@@ -44,26 +40,26 @@ function Articles(props) {
     let icon;
     let color;
 
-    switch (article.state) {
-      case 'published': {
+    switch (article.estado) {
+      case 'PUBLICADO': {
         state = 'Publicado';
         icon = 'public';
         color = 'primary';
         break;
       }
-      case 'inactivated': {
+      case 'INATIVO': {
         state = 'Inativo';
         icon = 'public_off';
         color = 'default';
         break;
       }
-      case 'boosted': {
+      case 'IMPULSIONADO': {
         state = 'Impulsionado';
         icon = 'star_rate';
         color = 'primary';
         break;
       }
-      case 'Removed': {
+      case 'REMOVIDO': {
         state = 'Removido';
         icon = 'delete';
         color = 'secondary';
@@ -106,11 +102,11 @@ function Articles(props) {
     const adminColumns = [
       {
         title: <ArticleHeaderTableCell icon="article" label="Artigo" />,
-        field: 'title',
+        field: 'titulo',
       },
       {
         title: <ArticleHeaderTableCell icon="person" label="Autor" />,
-        field: 'author.name',
+        field: 'autor.nome',
       },
       {
         title: <ArticleHeaderTableCell icon="label" label="Status" />,
@@ -122,11 +118,11 @@ function Articles(props) {
       },
       {
         title: <ArticleHeaderTableCell icon="bookmark" label="Tema" />,
-        field: 'theme.name',
+        field: 'tema.nome',
       },
       {
         title: <ArticleHeaderTableCell icon="category" label="Categoria" />,
-        field: 'category.name',
+        field: 'categoria.nome',
       },
     ];
 
@@ -140,7 +136,7 @@ function Articles(props) {
   function closeArticleDialog(stack) {
     setCreateArticleDialog(false);
     if (stack && stack.reason === 'articleCreated') {
-      history.push(`/articles/${stack.customUri}`);
+      history.push(`/articles/${stack.url}`);
     }
   }
 
@@ -160,38 +156,8 @@ function Articles(props) {
     setReload(true);
   }
 
-  function removeArticles(articlesToRemove) {
-    const state = 'removed';
-    const url = '/artigos';
-
-    const articlesId = articlesToRemove.map((elem) => elem.id);
-
-    axios.put(url, { state, articlesId }).then(() => {
-      const msg = `Artigo${articlesId.length > 1 ? 's' : ''} removido${articlesId.length > 1 ? 's' : ''} com sucesso`;
-      callToast(success(msg));
-      setReload(true);
-    }).catch((err) => {
-      const msg = defineErrorMsg(err);
-      callToast(toastError(msg));
-    });
-  }
-
-  function changeState(articlesToChange, state) {
-    const url = '/artigos';
-
-    const articlesId = articlesToChange.map((elem) => elem.id);
-
-    axios.put(url, { state, articlesId }).then(() => {
-      callToast(success('Operação realizada com sucesso'));
-      setReload(true);
-    }).catch((err) => {
-      const msg = defineErrorMsg(err);
-      callToast(toastError(msg));
-    });
-  }
-
   function openArticle(article) {
-    history.push(`/articles/${article.customUri}`);
+    history.push(`/articles/${article.url}`);
   }
 
   useEffect(() => {
@@ -199,7 +165,7 @@ function Articles(props) {
 
     async function getArticles() {
       try {
-        const url = `/artigos?query=${query}&page=${page}&limit=${limit}&op=all`;
+        const url = `/artigos?termo=${query}&skip=${(page - 1) * limit}&take=${limit}&op=all`;
         setLoading(true);
 
         await axios(url, { cancelToken: source.token })
@@ -207,17 +173,13 @@ function Articles(props) {
             setReload(false);
 
             setArticles(res.data);
-            setError(res.data.error);
-            setCount(res.data.count);
-            setLimit(res.data.limit);
-          })
-          .catch(() => {
-            setReload(false);
           });
 
         setLoading(false);
       } catch (err) {
         if (!axios.isCancel(err)) {
+          setLoading(false);
+          setReload(false);
           setError(true);
         }
       }
@@ -227,6 +189,7 @@ function Articles(props) {
       scrollToTop();
       getArticles();
     }
+
     return () => source.cancel();
   }, [articles, loading, count, page, limit, reload, error, query]);
 
@@ -248,7 +211,6 @@ function Articles(props) {
           onChangeRowsPerPage={changeLimit}
           onChangePage={changePage}
           onSearchChange={getBySearch}
-          customFilterAndSearch={() => null}
           showFirstLastPageButtons={false}
           icons={{
             ResetSearch: () => (query ? <Icon color="action">clear</Icon> : ''),
@@ -258,15 +220,11 @@ function Articles(props) {
             LastPage: () => <Icon color="action">last_page</Icon>,
           }}
           options={{
-            selection: true,
             showTitle: false,
             showTextRowsSelected: false,
             pageSize: DEFAULT_LIMIT,
             pageSizeOptions: OPTIONS_LIMIT,
             toolbarButtonAlignment: 'left',
-            selectionProps: {
-              color: 'primary',
-            },
             headerStyle: {
               zIndex: 1,
             },
@@ -298,28 +256,12 @@ function Articles(props) {
               onClick: openCreateArticleDialog,
               position: 'toolbar',
             },
-            {
-              tooltip: 'Publicar artigos', icon: 'publish', onClick: (evt, data) => changeState(data, 'published'), position: 'toolbarOnSelect',
-            },
-            {
-              tooltip: 'Impulsionar artigos', icon: 'star_rate', onClick: (evt, data) => changeState(data, 'boosted'), position: 'toolbarOnSelect',
-            },
-            {
-              tooltip: 'Inativar artigos', icon: 'not_interested', onClick: (evt, data) => changeState(data, 'inactivated'), position: 'toolbarOnSelect',
-            },
-            {
-              tooltip: 'Remover artigos', icon: 'delete', onClick: (evt, data) => removeArticles(data), position: 'toolbarOnSelect',
-            },
           ]}
         />
       </TableWrapper>
     </Container>
   );
 }
-
-Articles.propTypes = {
-  callToast: PropTypes.func.isRequired,
-};
 
 const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);

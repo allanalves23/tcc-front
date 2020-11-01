@@ -17,7 +17,6 @@ import ScrollBars from 'react-custom-scrollbars';
 import { devices } from '@/config/devices';
 
 import ArticleInfo from './ArticleInfo';
-import ArticleImages from './ArticleImages';
 import ArticleThemesAndCategories from './ArticleThemesAndCategories';
 import ArticleMoreOptions from './ArticleMoreOptions';
 
@@ -88,13 +87,6 @@ function ArticleSettings(props) {
               open={addReason}
               close={deleteReason}
               expanded={currentReason === 'info'}
-            />
-            <ArticleImages
-              article={article}
-              open={addReason}
-              close={deleteReason}
-              onSaveChanges={onSaveChanges}
-              expanded={currentReason === 'images'}
             />
             <ArticleThemesAndCategories
               article={article}

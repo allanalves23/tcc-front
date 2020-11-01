@@ -48,11 +48,11 @@ function CreateArticleDialog(props) {
   async function createArticle() {
     const url = '/artigos';
     setLoading(true);
-    await axios.post(url, { title: articleTitle }).then((res) => {
+    await axios.post(url, { titulo: articleTitle }).then((res) => {
       const articleCreated = res.data;
       callToast(success('Artigo criado com sucesso'));
       clearFields();
-      close({ reason: 'articleCreated', customUri: articleCreated.customUri });
+      close({ reason: 'articleCreated', url: articleCreated.url });
     }).catch((err) => {
       const msg = defineErrorMsg(err);
       callToast(error(msg));

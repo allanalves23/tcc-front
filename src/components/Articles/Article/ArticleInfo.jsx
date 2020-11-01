@@ -36,22 +36,22 @@ function ArticleInfo(props) {
     let color;
 
     switch (article.state) {
-      case 'published': {
+      case 'PUBLICADO': {
         state = 'Publicado';
         color = 'primary';
         break;
       }
-      case 'inactivated': {
+      case 'INATIVO': {
         state = 'Inativo';
         color = 'default';
         break;
       }
-      case 'boosted': {
+      case 'IMPULSIONADO': {
         state = 'Impulsionado';
         color = 'primary';
         break;
       }
-      case 'Removed': {
+      case 'REMOVIDO': {
         state = 'Removido';
         color = 'secondary';
         break;
@@ -66,7 +66,7 @@ function ArticleInfo(props) {
   }
 
   function getFormatContent() {
-    return article.contentType === 'md' ? 'Markdown' : 'Padrão';
+    return 'Markdown';
   }
 
   return (
@@ -83,14 +83,14 @@ function ArticleInfo(props) {
             <Typography variant="body2" component="span">
               Artigo:
               {' '}
-              {article && article.title}
+              {article && article.titulo}
             </Typography>
           </Box>
           <Box display="flex" alignItems="center" mb={1}>
             <Typography variant="body2" component="span">
               Autor:
               {' '}
-              {article && article.author && article.author.name}
+              {article && article.autor && article.autor.nome}
             </Typography>
           </Box>
           <Box display="flex" alignItems="center" mb={1}>
@@ -104,7 +104,7 @@ function ArticleInfo(props) {
             <Typography variant="body2" component="span">
               Criado em:
               {' '}
-              {article && article.createdAt && displayFullDate(article.createdAt)}
+              {article && article.dataCadastro && displayFullDate(article.dataCadastro)}
             </Typography>
           </Box>
           {article && article.publishedAt && (

@@ -10,11 +10,6 @@ import {
   Icon,
   Typography,
   TextField,
-  InputAdornment,
-  FormControl,
-  Select,
-  InputLabel,
-  MenuItem,
   Box,
   Button,
   Divider,
@@ -124,11 +119,7 @@ function ArticleMoreOptions(props) {
 
       const articleChanges = {
         id: article.id,
-        socialRepository,
-        socialRepositoryType,
-        socialVideo,
-        socialVideoType,
-        customUri,
+        url: customUri,
       };
       onSaveChanges(articleChanges);
       setIsSaved(true);
@@ -147,15 +138,15 @@ function ArticleMoreOptions(props) {
   }
 
   function isDraft() {
-    return article.state === 'draft';
+    return article.estado === 'RASCUNHO';
   }
 
   function isInactivated() {
-    return article.state === 'inactivated';
+    return article.estado === 'INATIVO';
   }
 
   function isBoosted() {
-    return article.state === 'boosted';
+    return article.estado === 'IMPULSIONADO';
   }
 
   useEffect(() => {
@@ -176,7 +167,7 @@ function ArticleMoreOptions(props) {
       setSocialRepositoryType(article.socialRepositoryType);
       setSocialVideo(article.socialVideo);
       setSocialVideoType(article.socialVideoType);
-      setCustomUri(article.customUri);
+      setCustomUri(article.url);
     }
   }, [article, socialRepository, socialRepositoryType, socialVideo, socialVideoType, mounted]);
 
@@ -216,71 +207,75 @@ function ArticleMoreOptions(props) {
               />
             </CustomTooltip>
           </BoxSocialMedia>
-          <BoxSocialMedia>
-            <FormControl className="social-media-type">
-              <InputLabel>Tipo</InputLabel>
-              <Select
-                value={socialRepositoryType || 'github'}
-                onChange={changeSocialRepositoryType}
-              >
-                <MenuItem value="github">GitHub</MenuItem>
-                <MenuItem value="gitlab">GitLab</MenuItem>
-                <MenuItem value="other">Outro</MenuItem>
-              </Select>
-            </FormControl>
-            <TextField
-              label="Repositório"
-              margin="dense"
-              fullWidth
-              error={false}
-              helperText={(
-                <Typography component="span" variant="caption">
-                  <strong>Informe o link completo do repositório</strong>
-                </Typography>
-            )}
-              value={socialRepository || ''}
-              onChange={(evt) => setSocialRepository(evt.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    {getRepoTypeIcon()}
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </BoxSocialMedia>
-          <BoxSocialMedia>
-            <FormControl className="social-media-type">
-              <InputLabel>Tipo</InputLabel>
-              <Select
-                value={socialVideoType || 'youtube'}
-                onChange={changeSocialVideoType}
-              >
-                <MenuItem value="youtube">Youtube</MenuItem>
-                <MenuItem value="other">Outro</MenuItem>
-              </Select>
-            </FormControl>
-            <TextField
-              label="Video"
-              margin="dense"
-              fullWidth
-              error={false}
-              helperText={(
-                <Typography component="span" variant="caption">
-                  <strong>Informe o link completo do video</strong>
-                </Typography>
-            )}
-              value={socialVideo || ''}
-              onChange={(evt) => setSocialVideo(evt.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    {getVideoTypeIcon()}
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </BoxSocialMedia>
+          {/*
+            <BoxSocialMedia>
+              <FormControl className="social-media-type">
+                <InputLabel>Tipo</InputLabel>
+                <Select
+                  value={socialRepositoryType || 'github'}
+                  onChange={changeSocialRepositoryType}
+                >
+                  <MenuItem value="github">GitHub</MenuItem>
+                  <MenuItem value="gitlab">GitLab</MenuItem>
+                  <MenuItem value="other">Outro</MenuItem>
+                </Select>
+              </FormControl>
+              <TextField
+                label="Repositório"
+                margin="dense"
+                fullWidth
+                error={false}
+                helperText={(
+                  <Typography component="span" variant="caption">
+                    <strong>Informe o link completo do repositório</strong>
+                  </Typography>
+              )}
+                value={socialRepository || ''}
+                onChange={(evt) => setSocialRepository(evt.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      {getRepoTypeIcon()}
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </BoxSocialMedia>
+          /* }
+          {/*
+            <BoxSocialMedia>
+              <FormControl className="social-media-type">
+                <InputLabel>Tipo</InputLabel>
+                <Select
+                  value={socialVideoType || 'youtube'}
+                  onChange={changeSocialVideoType}
+                >
+                  <MenuItem value="youtube">Youtube</MenuItem>
+                  <MenuItem value="other">Outro</MenuItem>
+                </Select>
+              </FormControl>
+              <TextField
+                label="Video"
+                margin="dense"
+                fullWidth
+                error={false}
+                helperText={(
+                  <Typography component="span" variant="caption">
+                    <strong>Informe o link completo do video</strong>
+                  </Typography>
+              )}
+                value={socialVideo || ''}
+                onChange={(evt) => setSocialVideo(evt.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      {getVideoTypeIcon()}
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              </BoxSocialMedia>
+            */}
           <Box
             width="100%"
             display="flex"

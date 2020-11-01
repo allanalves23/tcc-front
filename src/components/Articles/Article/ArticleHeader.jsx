@@ -41,7 +41,7 @@ function ArticleHeader(props) {
   /**
    * @description Data states
    */
-  const [articleState, setArticleState] = useState({ title: '', description: '' });
+  const [articleState, setArticleState] = useState({ titulo: '', descricao: '' });
   const debouncedArticle = useDebounce(articleState, 1000);
 
   const matches = useMediaQuery(devices.tablet);
@@ -53,11 +53,11 @@ function ArticleHeader(props) {
   }
 
   function isPublished() {
-    return article.state === 'published';
+    return article.estado === 'PUBLICADO';
   }
 
   function isBoosted() {
-    return article.state === 'boosted';
+    return article.estado === 'IMPULSIONADO';
   }
 
   useEffect(() => {
@@ -76,8 +76,8 @@ function ArticleHeader(props) {
   useEffect(() => {
     if (!mounted) {
       setMounted(true);
-      const { title, description } = article;
-      setArticleState({ title: title || '', description: description || '' });
+      const { titulo, descricao } = article;
+      setArticleState({ titulo: titulo || '', descricao: descricao || '' });
     }
   }, [article, articleState, mounted]);
 
@@ -88,12 +88,12 @@ function ArticleHeader(props) {
           <Box display="flex" alignItems="center" width="100%">
             <ArticleLogo onClick={() => onShowSettings('images')}>
               { !article.logoImg && <ArticleIcon color="action">text_snippet</ArticleIcon>}
-              { article.logoImg && <img src={article.logoImg} alt={article.title} />}
+              { article.logoImg && <img src={article.logoImg} alt={article.titulo} />}
             </ArticleLogo>
             <ArticleTitleTextField
-              value={articleState.title}
-              placeholder={articleState.title || 'Artigo sem título'}
-              onChange={(evt) => changeTitleOrDescription(evt, 'title')}
+              value={articleState.titulo}
+              placeholder={articleState.titulo || 'Artigo sem título'}
+              onChange={(evt) => changeTitleOrDescription(evt, 'titulo')}
               fullWidth
             />
             <SavedIndicator saving={isSaving} />
@@ -149,9 +149,9 @@ function ArticleHeader(props) {
         <Box marginY={1} width="100%">
           <ArticleDescriptionTextField
             fontSize={0.9}
-            value={articleState.description}
-            placeholder={articleState.description || 'Nenhuma descrição definida'}
-            onChange={(evt) => changeTitleOrDescription(evt, 'description')}
+            value={articleState.descricao}
+            placeholder={articleState.descricao || 'Nenhuma descrição definida'}
+            onChange={(evt) => changeTitleOrDescription(evt, 'descricao')}
           />
         </Box>
       </Box>
