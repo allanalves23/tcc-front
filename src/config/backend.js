@@ -8,10 +8,6 @@ const ipinfoToken = process.env.REACT_APP_IP_INFO_TOKEN;
 const defineErrorMsg = (error) => {
   let errorMsg = 'Ocorreu um erro desconhecido, se persistir reporte';
 
-  if (error.isAxiosError) {
-    errorMsg = 'Ops, não conseguimos conectar ao servidor, tente novamente mais tarde!';
-  }
-
   if (error.response && error.response.data && error.response.data.Error) {
     if (typeof error.response.data.Error === 'string') {
       errorMsg = error.response.data.Error;
