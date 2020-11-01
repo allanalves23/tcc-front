@@ -116,10 +116,10 @@ function ArticleMoreOptions(props) {
   function saveChanges() {
     try {
       validateChanges();
-
       const articleChanges = {
         id: article.id,
         url: customUri,
+        providedInMoreOptions: true,
       };
       onSaveChanges(articleChanges);
       setIsSaved(true);

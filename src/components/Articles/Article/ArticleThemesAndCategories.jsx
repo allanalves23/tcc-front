@@ -59,12 +59,12 @@ function ArticleThemesAndCategories(props) {
 
     let themes = [];
     try {
-      const url = `/themes?query=${query}`;
+      const url = `/temas?termo=${query}`;
       const response = await axios(url);
 
-      themes = response.data.themes.map((elem) => ({
+      themes = response.data.map((elem) => ({
         ...elem,
-        label: elem.name,
+        label: elem.nome,
         value: elem.id,
       })) || [];
     } catch (err) {
@@ -80,8 +80,9 @@ function ArticleThemesAndCategories(props) {
 
   function saveChanges() {
     const articleChanged = {
-      themeId: theme && theme.id,
-      categoryId: category && category.id,
+      tema: theme,
+      categoria: category,
+      providedInThemesAndCategories: true,
     };
 
     onSaveChanges(articleChanged);
@@ -91,12 +92,12 @@ function ArticleThemesAndCategories(props) {
   async function loadCategories(query) {
     let categories = [];
     try {
-      const url = `/categories/${query}/themes/${theme.id}`;
+      const url = `/categorias/temas/${theme.id}?termo=${query}`;
       const response = await axios(url);
 
       categories = response.data.map((elem) => ({
         ...elem,
-        label: elem.name,
+        label: elem.nome,
         value: elem.id,
       })) || [];
     } catch (err) {
@@ -109,21 +110,21 @@ function ArticleThemesAndCategories(props) {
   useEffect(() => {
     if (!mounted) {
       if (article) {
-        setTheme(article.theme ? {
-          ...article.theme,
-          label: article.theme.name,
-          value: article.theme.id,
+        setTheme(article.tema ? {
+          ...article.tema,
+          label: article.tema.nome,
+          value: article.tema.id,
         } : null);
 
-        setCategory(article.category ? {
-          ...article.category,
-          label: article.category.name,
-          value: article.category.id,
+        setCategory(article.categoria ? {
+          ...article.categoria,
+          label: article.categoria.nome,
+          value: article.categoria.id,
         } : null);
       }
       setMounted(true);
     }
-  }, [theme, category, mounted, article, article.theme, article.category]);
+  }, [theme, category, mounted, article, article.tema, article.categoria]);
 
   useEffect(() => {
     if (!theme && mounted) {

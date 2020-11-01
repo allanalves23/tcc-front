@@ -147,11 +147,22 @@ function Article(props) {
     const source = axios.CancelToken.source();
 
     async function saveChanges() {
-      const url = `/artigos/${article.id}`;
+      let url = `/artigos/${article.id}`;
+      let httpMethod = 'put';
+
+      if (articleChanged && articleChanged.providedInThemesAndCategories) {
+        url = `/artigos/${article.id}/temas/categorias`;
+        delete articleChanged.providedInThemesAndCategories;
+      }
+
+      if (articleChanged && articleChanged.providedInMoreOptions) {
+        httpMethod = 'patch';
+        delete articleChanged.providedInMoreOptions;
+      }
 
       setIsSaving(true);
       try {
-        await axios.put(url, articleChanged, { cancelToken: source.token }).then(() => {
+        await axios[httpMethod](url, articleChanged, { cancelToken: source.token }).then(() => {
           setShouldSaveChanges(false);
           if (isDiffCustomUri(article, articleChanged)) {
             changeLocalUri(articleChanged);
