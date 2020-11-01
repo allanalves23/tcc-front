@@ -7,7 +7,7 @@ const success = (resp) => resp;
 const error = (err) => {
   const user = localStorage.getItem('user');
 
-  if (err && err.response && user) {
+    if (err && err.response && user) {
     const code = err.response.status;
 
     if (code === 401) {
@@ -20,6 +20,9 @@ const error = (err) => {
         goToHome();
       }, 3000);
     }
+  } else if (user && err && err.isAxiosError) {
+    localStorage.removeItem('user');
+    goToHome();
   }
 
   return Promise.reject(err);
