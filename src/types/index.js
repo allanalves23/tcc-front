@@ -9,7 +9,10 @@ import {
 } from 'prop-types';
 
 export const userType = shape({
-  id: string,
+  id: oneOfType([
+    string,
+    number,
+  ]),
   nome: string,
   email: string,
   genero: string,

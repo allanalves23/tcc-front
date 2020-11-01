@@ -16,8 +16,6 @@ import { scrollToTop } from '@/shared/index';
 import Header from '../../Header';
 
 import GeneralInformation from './GeneralInformation';
-import ExtraInformation from './ExtraInformation';
-import Configurations from './Configurations';
 import CustomPanelSummary from './CustomPanelSummary';
 
 import { CustomContainer } from './styles';
@@ -42,8 +40,8 @@ function MyAccount(props) {
     const source = axios.CancelToken.source();
 
     async function getUser() {
-      const id = user.userID;
-      const url = `/users/${id}`;
+      const { id } = user;
+      const url = `/autores/${id}`;
       setLoading(true);
 
       try {
@@ -62,7 +60,7 @@ function MyAccount(props) {
     if (!userState && !error) getUser();
 
     return () => source.cancel();
-  }, [user.userID, userState, error]);
+  }, [user, user.userID, userState, error]);
 
   useEffect(() => {
     scrollToTop();
@@ -98,40 +96,12 @@ function MyAccount(props) {
             >
               <CustomPanelSummary
                 icon="person"
-                title="Informações principais"
-                description="Dados gerais e essenciais para seu cadastro"
+                title="Meu Perfil"
+                description="Acesse e gerencie informações relacionadas ao perfil de Autor dos seus artigos"
                 expanded={Boolean(expanded === 'general_information')}
               />
               <AccordionDetails>
                 <GeneralInformation user={userState} />
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === 'extra_information'}
-              onChange={handleChange('extra_information')}
-            >
-              <CustomPanelSummary
-                icon="public"
-                title="Redes sociais e comunicação"
-                description="Informações complementares, estarão públicas para qualquer leitor"
-                expanded={Boolean(expanded === 'extra_information')}
-              />
-              <AccordionDetails>
-                <ExtraInformation isActive={expanded === 'extra_information'} />
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === 'configurations'}
-              onChange={handleChange('configurations')}
-            >
-              <CustomPanelSummary
-                icon="settings"
-                title="Configurações"
-                description="Opções avançadas sobre sua conta e preferências"
-                expanded={Boolean(expanded === 'configurations')}
-              />
-              <AccordionDetails>
-                <Configurations />
               </AccordionDetails>
             </Accordion>
           </Grid>

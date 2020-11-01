@@ -43,7 +43,6 @@ function AppBar(props) {
   }
 
   function closeMenu(e) {
-    e.preventDefault();
     setAnchorMenu(null);
   }
 
@@ -97,7 +96,7 @@ function AppBar(props) {
             onClose={closeMenu}
           >
             <CustomLink to="/my-account" onClick={closeMenu}>
-              <MenuItem disabled>
+              <MenuItem>
                 <Box display="flex" alignItems="center">
                   <Icon color="action">
                     person_outline

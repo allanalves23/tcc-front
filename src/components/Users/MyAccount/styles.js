@@ -36,6 +36,9 @@ export const IsolatedGrid = styled(Grid)({
 
 export const FullTextField = styled(Box)({
   width: '85%',
+  [devices.tablet]: {
+    width: '100%',
+  },
 });
 
 export const CustomTextField = styled(TextField)({

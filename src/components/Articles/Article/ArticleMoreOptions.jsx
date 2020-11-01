@@ -23,14 +23,6 @@ import { isValidLink } from '@/shared';
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { error } from '@/config/toasts';
 
-import {
-  FaYoutube,
-  FaVideo,
-  FaGitlab,
-  FaGithub,
-  FaStore,
-} from 'react-icons/fa';
-
 import { CustomTooltip } from '@/components/styles';
 
 import RemoveArticleDialog from '@/components/Articles/RemoveArticleDialog.jsx';
@@ -67,30 +59,6 @@ function ArticleMoreOptions(props) {
     } else {
       close();
     }
-  }
-
-  function getRepoTypeIcon() {
-    switch (socialRepositoryType) {
-      case 'github': return (<FaGithub />);
-      case 'gitlab': return (<FaGitlab />);
-      default: return (<FaStore />);
-    }
-  }
-
-  function getVideoTypeIcon() {
-    return (socialVideoType === 'youtube' ? <FaYoutube /> : <FaVideo />);
-  }
-
-  function changeSocialRepositoryType(evt) {
-    const { value } = evt.target;
-    setSocialRepository('');
-    setSocialRepositoryType(value);
-  }
-
-  function changeSocialVideoType(evt) {
-    const { value } = evt.target;
-    setSocialVideo('');
-    setSocialVideoType(value);
   }
 
   function changeCustomUri(evt) {

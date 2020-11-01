@@ -86,11 +86,9 @@ function DrawerMenu(props) {
           </CustomLink>
           <CustomLink
             to="/my-account"
-            className="disabled-link"
           >
             <CustomListItem
               button
-              disabled
             >
               <Box display="flex" alignItems="center">
                 <Icon color="action">
