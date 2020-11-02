@@ -42,7 +42,7 @@ function AppBar(props) {
     setAnchorMenu(event.currentTarget);
   }
 
-  function closeMenu(e) {
+  function closeMenu() {
     setAnchorMenu(null);
   }
 
@@ -122,7 +122,7 @@ function AppBar(props) {
             { user && true
                 && (
                   <CustomLink to="/management" onClick={closeMenu}>
-                    <MenuItem disabled>
+                    <MenuItem>
                       <Box display="flex" alignItems="center">
                         <Icon color="action">
                           settings

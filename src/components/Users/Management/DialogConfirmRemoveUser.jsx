@@ -33,7 +33,7 @@ function ConfirmRemoveUser(props) {
 
   async function remove() {
     const { id } = user;
-    const url = `/users/${id}`;
+    const url = `/usuarios/${id}`;
     setRemoving(true);
     await axios.delete(url).then(() => {
       callToast(success('Usuário removido com sucesso'));

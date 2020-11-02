@@ -6,6 +6,7 @@ import {
   Grid,
   Box,
   CircularProgress,
+  Typography,
 } from '@material-ui/core';
 
 import axios from 'axios';
@@ -27,7 +28,7 @@ function MyAccount(props) {
 
   const [expanded, setExpanded] = useState(false);
   const [userState, setUserState] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   function handleChange(panel) {
@@ -51,9 +52,8 @@ function MyAccount(props) {
 
         setLoading(false);
       } catch (err) {
-        if (!axios.isCancel(err)) {
-          setError(true);
-        }
+        setError(true);
+        setLoading(false);
       }
     }
 
@@ -87,7 +87,7 @@ function MyAccount(props) {
             </Box>
           )
       }
-      {userState && !loading
+      {!loading
           && (
           <Grid item xs={12}>
             <Accordion
@@ -101,7 +101,19 @@ function MyAccount(props) {
                 expanded={Boolean(expanded === 'general_information')}
               />
               <AccordionDetails>
-                <GeneralInformation user={userState} />
+                { error && (
+                  <Box width="100%" display="flex" justifyContent="center" alignItems="center" p={4}>
+                    <Typography variant="body2" component="p" align="center">
+                      Ops, parece que não foi possível recuperar seu perfil de Autor,
+                      por acaso você já criou algum Artigo?
+                      Ao criar seu primeiro artigo você possuírá o acesso de editar
+                      seu perfil de Autor.
+                    </Typography>
+                  </Box>
+                )}
+                { !error && (
+                  <GeneralInformation user={userState} />
+                )}
               </AccordionDetails>
             </Accordion>
           </Grid>

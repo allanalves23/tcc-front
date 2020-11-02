@@ -46,6 +46,7 @@ import Header from '@/components/Header.jsx';
 import RemovedUsers from '@/components/Users/Management/RemovedUsers.jsx';
 import DialogConfirmAdminPassword from './DialogConfirmAdminPassword';
 import DialogConfirmRemoveUser from './DialogConfirmRemoveUser';
+import DialogConfirmRestoreUser from './DialogConfirmRestoreUser';
 
 import {
   HudLink,
@@ -75,6 +76,7 @@ function Users(props) {
   const [userSelected, setUserSelected] = useState({});
   const [validateDialog, setValidateDialog] = useState(false);
   const [removedUsersDialog, setRemovedUsersDialog] = useState(false);
+  const [confirmRestoreUserDialog, setConfirmRestoreUserDialog] = useState(false);
   const [confirmRemoveUserDialog, setConfirmRemoveUserDialog] = useState(false);
   const [reload, setReload] = useState(true);
 
@@ -108,10 +110,6 @@ function Users(props) {
     setRemovedUsersDialog(false);
   }
 
-  function showValidadeDialog() {
-    setValidateDialog(true);
-  }
-
   function hideValidadeDialog(event) {
     setValidateDialog(false);
     const { authorized } = event;
@@ -126,16 +124,23 @@ function Users(props) {
 
     // The User logged is trying remove their own account
     if (userNotYetSelected.id === user.userID) {
-      callToast(info("Para remover sua conta acesse a opção 'Meus dados' e 'Configurações'"));
+      callToast(info('Não é possível remover sua propria conta'));
       return;
     }
     setUserSelected(userNotYetSelected);
     setConfirmRemoveUserDialog(true);
   }
 
-  function hideConfirmRemoveUserDialog(event) {
-    const { removed } = event;
-    if (removed) {
+  function showConfirmRestoreUserDialog(userNotYetSelected) {
+    if (loading) return;
+
+    setUserSelected(userNotYetSelected);
+    setConfirmRestoreUserDialog(true);
+  }
+
+  function hideConfirmUserDialog(event) {
+    const { removed, restored } = event;
+    if (removed || restored) {
       if (page > 1 && users.length === 1) {
         setPage(page - 1);
       }
@@ -143,6 +148,7 @@ function Users(props) {
       setReload(true);
     }
     setConfirmRemoveUserDialog(false);
+    setConfirmRestoreUserDialog(false);
   }
 
   function changeOrder() {
@@ -154,12 +160,10 @@ function Users(props) {
 
   useEffect(() => {
     async function searchUsers() {
-      const url = `/users?page=${page}&query=${query}&limit=${limit}&order=${order}`;
+      const url = `/usuarios?skip=${page - 1}&termo=${query}&take=${limit}`;
       setLoading(true);
       await axios(url).then((res) => {
-        setUsers(res.data.users);
-        setCount(res.data.count);
-        setLimit(res.data.limit);
+        setUsers(res.data);
       }).catch(() => {
         setError(true);
       });
@@ -188,7 +192,12 @@ function Users(props) {
       />
       <DialogConfirmRemoveUser
         open={confirmRemoveUserDialog}
-        closeDialog={hideConfirmRemoveUserDialog}
+        closeDialog={hideConfirmUserDialog}
+        user={userSelected}
+      />
+      <DialogConfirmRestoreUser
+        open={confirmRestoreUserDialog}
+        closeDialog={hideConfirmUserDialog}
         user={userSelected}
       />
       <RemovedUsers
@@ -202,18 +211,6 @@ function Users(props) {
               <CustomButton
                 color="primary"
                 icon="add_circle_outline"
-                fullWidth
-              />
-            </HudLink>
-            <CustomButton
-              color="secondary"
-              icon="restore_from_trash"
-              onClick={showValidadeDialog}
-            />
-            <HudLink to="/management">
-              <CustomButton
-                color="default"
-                icon="settings"
                 fullWidth
               />
             </HudLink>
@@ -271,16 +268,6 @@ function Users(props) {
                     <TableCell>
                       <Box display="flex" alignItems="center">
                         <TableIcon fontSize="small" color="action">
-                          person
-                        </TableIcon>
-                        <Typography component="span" variant="body1">
-                          Nome
-                        </Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Box display="flex" alignItems="center">
-                        <TableIcon fontSize="small" color="action">
                           alternate_email
                         </TableIcon>
                         <Typography component="span" variant="body1">
@@ -301,6 +288,16 @@ function Users(props) {
                     <TableCell>
                       <Box display="flex" alignItems="center">
                         <TableIcon fontSize="small" color="action">
+                          status
+                        </TableIcon>
+                        <Typography component="span" variant="body1">
+                          Status
+                        </Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell>
+                      <Box display="flex" alignItems="center">
+                        <TableIcon fontSize="small" color="action">
                           build
                         </TableIcon>
                         <Typography component="span" variant="body1">
@@ -313,19 +310,19 @@ function Users(props) {
                 <TableBody>
                   {users.map((elem) => (
                     <TableRow key={elem.id} hover>
-                      <TableCell scope="name">
-                        {elem.name}
-                      </TableCell>
                       <TableCell scope="email">
                         {elem.email}
                       </TableCell>
-                      <TableCell scope="tagAdmin">
+                      <TableCell scope="perfilDeAcesso">
+                        {elem.perfilDeAcesso === 'Admin' ? 'ADMINISTRADOR' : 'COMUM'}
+                      </TableCell>
+                      <TableCell scope="ativo">
                         <CustomChip
                           size="small"
-                          color={elem.tagAdmin ? 'primary' : 'default'}
+                          color={elem.ativo ? 'primary' : 'default'}
                           sizeIcon="small"
-                          icon={elem.tagAdmin ? 'supervisor_account' : 'person'}
-                          text={elem.tagAdmin ? 'Administrador' : 'Autor'}
+                          icon={elem.ativo ? 'done' : 'delete'}
+                          text={elem.ativo ? 'Ativo' : 'Inativo'}
                         />
                       </TableCell>
                       <TableCell scope="id">
@@ -336,11 +333,20 @@ function Users(props) {
                             tooltip={<Typography component="span" variant="body2">Editar</Typography>}
                           />
                         </CustomLink>
-                        <CustomIconButton
-                          icon="delete_forever"
-                          tooltip={<Typography component="span" variant="body2">Remover</Typography>}
-                          onClick={() => showConfirmRemoveUserDialog(elem)}
-                        />
+                        {elem.ativo && (
+                          <CustomIconButton
+                            icon="delete_forever"
+                            tooltip={<Typography component="span" variant="body2">Remover</Typography>}
+                            onClick={() => showConfirmRemoveUserDialog(elem)}
+                          />
+                        )}
+                        {!elem.ativo && (
+                          <CustomIconButton
+                            icon="restore_from_trash"
+                            tooltip={<Typography component="span" variant="body2">Reativar</Typography>}
+                            onClick={() => showConfirmRestoreUserDialog(elem)}
+                          />
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}

@@ -103,11 +103,9 @@ function DrawerMenu(props) {
           { true && (
             <CustomLink
               to="/management"
-              className="disabled-link"
             >
               <CustomListItem
                 button
-                disabled
               >
                 <Box display="flex" alignItems="center">
                   <Icon color="action">

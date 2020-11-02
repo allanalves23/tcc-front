@@ -8,19 +8,19 @@ import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { success, error as toastError } from '@/config/toasts';
 
 import axios from 'axios';
-
 import { defineErrorMsg } from '@/config/backend';
+
 import {
   Dialog,
-  LinearProgress,
   DialogTitle,
   DialogContent,
   DialogContentText,
   DialogActions,
   Button,
+  LinearProgress,
 } from '@material-ui/core';
 
-function ConfirmRestore(props) {
+function ConfirmRestoreUser(props) {
   const {
     open,
     closeDialog,
@@ -33,11 +33,10 @@ function ConfirmRestore(props) {
 
   async function restore() {
     const { id } = user;
+    const url = `/usuarios/${id}/restauracoes`;
     setRestoring(true);
-    const url = `/users/configs/${id}`;
-
-    await axios.patch(url).then(() => {
-      callToast(success('Usuário restaurado com sucesso'));
+    await axios.put(url).then(() => {
+      callToast(success('Usuário removido com sucesso'));
       closeDialog({ restored: true });
     }).catch((err) => {
       const msg = defineErrorMsg(err);
@@ -57,38 +56,39 @@ function ConfirmRestore(props) {
     >
       { restoring && <LinearProgress color="primary" />}
       <DialogTitle>
-        Resturar usuário
+        Reativar usuário
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Deseja realmente resturar o usuário
+          Tem certeza que deseja reativar o usuário
+          {' '}
           {` ${user.userName} (${user.email}) ?`}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button
-          onClick={closeDialog}
-          disabled={restoring}
           variant={theme === 'dark' ? 'contained' : 'text'}
           size="small"
+          onClick={closeDialog}
+          disabled={restoring}
         >
           Fechar
         </Button>
         <Button
-          onClick={restore}
           color="primary"
           variant={theme === 'dark' ? 'contained' : 'text'}
           size="small"
           disabled={restoring}
+          onClick={restore}
         >
-          Confirmar
+          Remover
         </Button>
       </DialogActions>
     </Dialog>
   );
 }
 
-ConfirmRestore.propTypes = {
+ConfirmRestoreUser.propTypes = {
   open: PropTypes.bool,
   closeDialog: PropTypes.func.isRequired,
   callToast: PropTypes.func.isRequired,
@@ -96,12 +96,11 @@ ConfirmRestore.propTypes = {
   theme: appTheme.isRequired,
 };
 
-ConfirmRestore.defaultProps = {
+ConfirmRestoreUser.defaultProps = {
   open: false,
 };
-
 
 const mapStateToProps = (state) => ({ toast: state.config, theme: state.theme });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConfirmRestore);
+export default connect(mapStateToProps, mapDispatchToProps)(ConfirmRestoreUser);
