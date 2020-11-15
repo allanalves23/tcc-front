@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { reactRouterParams } from '@/types';
+import { reactRouterParams, userType } from '@/types';
 import { Redirect } from 'react-router-dom';
+import { Alert } from '@material-ui/lab';
 
 import {
   Container,
@@ -36,6 +37,7 @@ function Article(props) {
   const {
     match,
     callToast,
+    user,
   } = props;
 
   /**
@@ -50,6 +52,7 @@ function Article(props) {
   const [redirect, setRedirect] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [shouldSaveChanges, setShouldSaveChanges] = useState(false);
+  const [userOwnerWarning, setUserOwnerWarning] = useState(false);
 
   /**
    * @description Data states
@@ -132,6 +135,16 @@ function Article(props) {
   function closeSettings() {
     removeReason();
     setShowSettings(false);
+  }
+
+  function checkUserProfile() {
+    if (!article || !article.autor || article.autor.usuarioId !== user.id) {
+      setUserOwnerWarning(true);
+    }
+  }
+
+  function closeUserOwnerWarning() {
+    setUserOwnerWarning(false);
   }
 
   useEffect(() => {
@@ -258,6 +271,16 @@ function Article(props) {
             onShowSettings={openSettings}
             isPreviewed={showPreview}
           />
+          { userOwnerWarning
+            && (
+              <Alert
+                onClose={closeUserOwnerWarning}
+                severity="info"
+                variant="filled"
+              >
+                Somente os donos do artigo podem modificar seu conteúdo
+              </Alert>
+            )}
           <Box display="flex" height={425}>
             <ArticleEditArea sizewidth={showPreview && !matches ? 'withPreview' : 'withoutPreview'}>
               <CustomPaper>
@@ -268,6 +291,8 @@ function Article(props) {
                   value={articleContent || ''}
                   onChange={changeContent}
                   onScroll={scrollContent}
+                  onClick={checkUserProfile}
+                  disabled={!article || !article.autor || article.autor.usuarioId !== user.id}
                 />
               </CustomPaper>
             </ArticleEditArea>
@@ -297,7 +322,8 @@ function Article(props) {
 Article.propTypes = {
   match: reactRouterParams.isRequired,
   callToast: PropTypes.func.isRequired,
+  user: userType.isRequired,
 };
-const mapStateToProps = (state) => ({ toast: state.config });
+const mapStateToProps = (state) => ({ toast: state.config, user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Article);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { articleType } from '@/types';
+import { articleType, userType } from '@/types';
 
 import { Redirect } from 'react-router-dom';
 
@@ -39,6 +39,7 @@ function ArticleMoreOptions(props) {
     onSaveChanges,
     onChangeState,
     callToast,
+    user,
   } = props;
 
   const [mounted, setMounted] = useState(false);
@@ -175,75 +176,6 @@ function ArticleMoreOptions(props) {
               />
             </CustomTooltip>
           </BoxSocialMedia>
-          {/*
-            <BoxSocialMedia>
-              <FormControl className="social-media-type">
-                <InputLabel>Tipo</InputLabel>
-                <Select
-                  value={socialRepositoryType || 'github'}
-                  onChange={changeSocialRepositoryType}
-                >
-                  <MenuItem value="github">GitHub</MenuItem>
-                  <MenuItem value="gitlab">GitLab</MenuItem>
-                  <MenuItem value="other">Outro</MenuItem>
-                </Select>
-              </FormControl>
-              <TextField
-                label="Repositório"
-                margin="dense"
-                fullWidth
-                error={false}
-                helperText={(
-                  <Typography component="span" variant="caption">
-                    <strong>Informe o link completo do repositório</strong>
-                  </Typography>
-              )}
-                value={socialRepository || ''}
-                onChange={(evt) => setSocialRepository(evt.target.value)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      {getRepoTypeIcon()}
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </BoxSocialMedia>
-          /* }
-          {/*
-            <BoxSocialMedia>
-              <FormControl className="social-media-type">
-                <InputLabel>Tipo</InputLabel>
-                <Select
-                  value={socialVideoType || 'youtube'}
-                  onChange={changeSocialVideoType}
-                >
-                  <MenuItem value="youtube">Youtube</MenuItem>
-                  <MenuItem value="other">Outro</MenuItem>
-                </Select>
-              </FormControl>
-              <TextField
-                label="Video"
-                margin="dense"
-                fullWidth
-                error={false}
-                helperText={(
-                  <Typography component="span" variant="caption">
-                    <strong>Informe o link completo do video</strong>
-                  </Typography>
-              )}
-                value={socialVideo || ''}
-                onChange={(evt) => setSocialVideo(evt.target.value)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      {getVideoTypeIcon()}
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              </BoxSocialMedia>
-            */}
           <Box
             width="100%"
             display="flex"
@@ -251,7 +183,7 @@ function ArticleMoreOptions(props) {
             alignItems="center"
             marginY={2}
           >
-            {!isSaved && (
+            {(!isSaved && article && article.autor && article.autor.usuarioId === user.id) && (
               <Button
                 size="small"
                 color="primary"
@@ -338,13 +270,14 @@ ArticleMoreOptions.propTypes = {
   onChangeState: PropTypes.func.isRequired,
   callToast: PropTypes.func.isRequired,
   expanded: PropTypes.bool,
+  user: userType.isRequired,
 };
 
 ArticleMoreOptions.defaultProps = {
   expanded: false,
 };
 
-const mapStateToProps = (state) => ({ toast: state.config });
+const mapStateToProps = (state) => ({ toast: state.config, user: state.user });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 

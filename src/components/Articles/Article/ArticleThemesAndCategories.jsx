@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { appTheme, articleType } from '@/types';
+import { appTheme, articleType, userType } from '@/types';
 
 import {
   Accordion,
@@ -31,6 +31,7 @@ function ArticleThemesAndCategories(props) {
     themeApp,
     callToast,
     onSaveChanges,
+    user,
   } = props;
 
   const [theme, setTheme] = useState(null);
@@ -185,26 +186,27 @@ function ArticleThemesAndCategories(props) {
               />
             </Box>
           )}
+          {(article && article.autor && article.autor.usuarioId === user.id) && (
+            <Box
+              width="100%"
+              display="flex"
+              justifyContent="flex-end"
+              alignItems="center"
+              marginY={2}
+            >
+              {!isSaved && (
+                <Button
+                  size="small"
+                  color="primary"
+                  variant="contained"
+                  onClick={saveChanges}
+                >
+                  Salvar
 
-          <Box
-            width="100%"
-            display="flex"
-            justifyContent="flex-end"
-            alignItems="center"
-            marginY={2}
-          >
-            {!isSaved && (
-              <Button
-                size="small"
-                color="primary"
-                variant="contained"
-                onClick={saveChanges}
-              >
-                Salvar
-
-              </Button>
-            )}
-          </Box>
+                </Button>
+              )}
+            </Box>
+          )}
         </Box>
       </AccordionDetails>
     </Accordion>
@@ -219,13 +221,14 @@ ArticleThemesAndCategories.propTypes = {
   onSaveChanges: PropTypes.func.isRequired,
   expanded: PropTypes.bool,
   callToast: PropTypes.func.isRequired,
+  user: userType.isRequired,
 };
 
 ArticleThemesAndCategories.defaultProps = {
   expanded: false,
 };
 
-const mapStateToProps = (state) => ({ themeApp: state.theme });
+const mapStateToProps = (state) => ({ themeApp: state.theme, user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArticleThemesAndCategories);
