@@ -28,6 +28,7 @@ function Articles(props) {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [viewAll, setViewAll] = useState(false);
   const [articles, setArticles] = useState([]);
   const [query, setQuery] = useState('');
   const [limit, setLimit] = useState(10);
@@ -163,12 +164,17 @@ function Articles(props) {
     history.push(`/articles/${article.url}`);
   }
 
+  function toggleViewType() {
+    setViewAll(!viewAll);
+    setReload(true);
+  }
+
   useEffect(() => {
     const source = axios.CancelToken.source();
 
     async function getArticles() {
       try {
-        const url = `/artigos?termo=${query}&skip=${(page - 1) * limit}&take=${limit}&op=all`;
+        const url = `/artigos?termo=${query}&skip=${(page - 1) * limit}&take=${limit}&all=${viewAll}`;
         setLoading(true);
 
         await axios(url, { cancelToken: source.token })
@@ -194,7 +200,7 @@ function Articles(props) {
     }
 
     return () => source.cancel();
-  }, [articles, loading, count, page, limit, reload, error, query]);
+  }, [articles, loading, count, page, limit, reload, error, query, viewAll]);
 
   return (
     <Container id="component">
@@ -257,6 +263,12 @@ function Articles(props) {
               tooltip: 'Novo artigo',
               icon: 'add_circle',
               onClick: openCreateArticleDialog,
+              position: 'toolbar',
+            },
+            {
+              tooltip: viewAll ? 'Visualizar meus artigos' : 'Visualizar todos os artigos',
+              icon: viewAll ? 'account_circle' : 'groups',
+              onClick: toggleViewType,
               position: 'toolbar',
             },
           ]}
