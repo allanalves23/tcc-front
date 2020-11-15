@@ -8,20 +8,24 @@ import { scrollToTop } from '@/shared/index';
 
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { callToast as toastEmitter } from '@/redux/toast/toastActions';
+
+import { userType } from '@/types';
 
 import MaterialTable from 'material-table';
 
 import Header from '@/components/Header.jsx';
 import NotFound from '@/components/NotFound/DataNotFound.jsx';
 import Chip from '@/components/Chip.jsx';
-import { bindActionCreators } from 'redux';
 import ArticleHeaderTableCell from './ArticleHeaderTableCell';
 import CreateArticleDialog from './CreateArticleDialog';
 
 import { TableWrapper } from './styles';
 
-function Articles() {
+function Articles(props) {
+  const {
+    user,
+  } = props;
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [articles, setArticles] = useState([]);
@@ -78,7 +82,7 @@ function Articles() {
     const authorColumns = [
       {
         title: <ArticleHeaderTableCell icon="article" label="Artigo" />,
-        field: 'title',
+        field: 'titulo',
       },
       {
         title: <ArticleHeaderTableCell icon="label" label="Status" />,
@@ -90,11 +94,11 @@ function Articles() {
       },
       {
         title: <ArticleHeaderTableCell icon="bookmark" label="Tema" />,
-        field: 'theme.name',
+        field: 'tema.nome',
       },
       {
         title: <ArticleHeaderTableCell icon="category" label="Categoria" />,
-        field: 'category.name',
+        field: 'categoria.nome',
       },
     ];
 
@@ -125,7 +129,7 @@ function Articles() {
       },
     ];
 
-    return true ? adminColumns : authorColumns;
+    return user.profileAccess === 'ADMIN' ? adminColumns : authorColumns;
   }
 
   function openCreateArticleDialog() {
@@ -262,7 +266,10 @@ function Articles() {
   );
 }
 
-const mapStateToProps = (state) => ({ user: state.user });
-const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
+Articles.propTypes = {
+  user: userType.isRequired,
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Articles);
+const mapStateToProps = (state) => ({ user: state.user });
+
+export default connect(mapStateToProps)(Articles);
