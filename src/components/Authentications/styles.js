@@ -28,6 +28,7 @@ export const GridPresentation = styled(Grid)({
   color: '#fff',
   fontWeight: 700,
   background: `url(${BgImg}) center center no-repeat`,
+  backgroundSize: 'auto 100%',
   padding: '0px 15px',
   '& h1': {
     textAlign: 'center',
