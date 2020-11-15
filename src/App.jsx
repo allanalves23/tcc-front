@@ -95,19 +95,6 @@ function App(props) {
       if (token) {
         setUser(token);
         setMenu(true);
-        // const url = '/auth/logged';
-        // await axios.post(url, token).then((res) => {
-        //   if (res.data.user) {
-        //     setUser(res.data);
-        //     setMenu(true);
-        //   } else {
-        //     localStorage.removeItem('user');
-        //     setUser(null);
-        //     setMenu(false);
-        //   }
-        // }).catch(() => {
-        //   setError(true);
-        // });
       } else {
         localStorage.removeItem('user');
         setUser(null);
