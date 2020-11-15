@@ -35,7 +35,7 @@ function ArticleInfo(props) {
     let state;
     let color;
 
-    switch (article.state) {
+    switch (article.estado) {
       case 'PUBLICADO': {
         state = 'Publicado';
         color = 'primary';

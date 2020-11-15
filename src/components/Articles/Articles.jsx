@@ -169,6 +169,28 @@ function Articles(props) {
     setReload(true);
   }
 
+  function getAdminActions() {
+    const actions = [
+      {
+        tooltip: 'Novo artigo',
+        icon: 'add_circle',
+        onClick: openCreateArticleDialog,
+        position: 'toolbar',
+      },
+    ];
+
+    if (user.profileAccess === 'ADMIN') {
+      actions.push({
+        tooltip: viewAll ? 'Visualizar meus artigos' : 'Visualizar todos os artigos',
+        icon: viewAll ? 'account_circle' : 'groups',
+        onClick: toggleViewType,
+        position: 'toolbar',
+      });
+    }
+
+    return actions;
+  }
+
   useEffect(() => {
     const source = axios.CancelToken.source();
 
@@ -258,20 +280,7 @@ function Articles(props) {
             },
           }}
           onRowClick={((evt, selectedRow) => openArticle(selectedRow))}
-          actions={[
-            {
-              tooltip: 'Novo artigo',
-              icon: 'add_circle',
-              onClick: openCreateArticleDialog,
-              position: 'toolbar',
-            },
-            {
-              tooltip: viewAll ? 'Visualizar meus artigos' : 'Visualizar todos os artigos',
-              icon: viewAll ? 'account_circle' : 'groups',
-              onClick: toggleViewType,
-              position: 'toolbar',
-            },
-          ]}
+          actions={getAdminActions()}
         />
       </TableWrapper>
     </Container>
