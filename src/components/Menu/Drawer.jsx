@@ -22,6 +22,7 @@ import {
 
 function DrawerMenu(props) {
   const {
+    user,
     logout,
   } = props;
 
@@ -100,7 +101,7 @@ function DrawerMenu(props) {
               </Box>
             </CustomListItem>
           </CustomLink>
-          { true && (
+          { user.profileAccess === 'ADMIN' && (
             <CustomLink
               to="/management"
             >

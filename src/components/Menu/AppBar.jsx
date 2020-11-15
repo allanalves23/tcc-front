@@ -119,7 +119,7 @@ function AppBar(props) {
                 </Typography>
               </Box>
             </MenuItem>
-            { user && true
+            { user && user.profileAccess === 'ADMIN'
                 && (
                   <CustomLink to="/management" onClick={closeMenu}>
                     <MenuItem>

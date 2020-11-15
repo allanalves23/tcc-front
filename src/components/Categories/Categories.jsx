@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { appTheme } from '@/types';
+import { appTheme, userType } from '@/types';
 import {
   Container,
   Table,
@@ -47,6 +47,7 @@ import {
 
 function Categories(props) {
   const {
+    user,
     theme,
   } = props;
 
@@ -171,7 +172,7 @@ function Categories(props) {
       <Box mb={3}>
         <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" width="100%">
           <HudButtons>
-            { true
+            { user.profileAccess === 'ADMIN'
               && (
               <CustomButton
                 color="primary"
@@ -180,7 +181,7 @@ function Categories(props) {
               />
               )
             }
-            { false
+            { user.profileAccess === 'ADMIN'
               && (
                 <HudLink to="/management">
                   <CustomButton
@@ -243,18 +244,19 @@ function Categories(props) {
                     </Typography>
                   </Box>
                 </TableCell>
-                {true && (
-                <TableCell>
-                  <Box display="flex" alignItems="center">
-                    <TableIcon fontSize="small" color="action">
-                      build
-                    </TableIcon>
-                    <Typography component="span" variant="body1">
-                      Ações
-                    </Typography>
-                  </Box>
-                </TableCell>
-                )}
+                {user.profileAccess === 'ADMIN'
+                  && (
+                    <TableCell>
+                      <Box display="flex" alignItems="center">
+                        <TableIcon fontSize="small" color="action">
+                          build
+                        </TableIcon>
+                        <Typography component="span" variant="body1">
+                          Ações
+                        </Typography>
+                      </Box>
+                    </TableCell>
+                  )}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -269,21 +271,22 @@ function Categories(props) {
                   <TableCell scope="theme">
                     {elem.tema ? elem.tema.nome : ''}
                   </TableCell>
-                  {true && (
-                  <TableCell scope="id">
-                    <CustomIconButton
-                      icon="edit"
-                      color={theme === 'dark' ? 'inherit' : 'primary'}
-                      tooltip={<Typography component="span" variant="body2">Editar</Typography>}
-                      onClick={() => selectCategory(elem, 'edit')}
-                    />
-                    <CustomIconButton
-                      icon="delete_forever"
-                      tooltip={<Typography component="span" variant="body2">Remover</Typography>}
-                      onClick={() => selectCategory(elem, 'remove')}
-                    />
-                  </TableCell>
-                  )}
+                  {user.profileAccess === 'ADMIN'
+                    && (
+                      <TableCell scope="id">
+                        <CustomIconButton
+                          icon="edit"
+                          color={theme === 'dark' ? 'inherit' : 'primary'}
+                          tooltip={<Typography component="span" variant="body2">Editar</Typography>}
+                          onClick={() => selectCategory(elem, 'edit')}
+                        />
+                        <CustomIconButton
+                          icon="delete_forever"
+                          tooltip={<Typography component="span" variant="body2">Remover</Typography>}
+                          onClick={() => selectCategory(elem, 'remove')}
+                        />
+                      </TableCell>
+                    )}
                 </TableRow>
               ))}
             </TableBody>
@@ -311,6 +314,7 @@ function Categories(props) {
 }
 
 Categories.propTypes = {
+  user: userType.isRequired,
   theme: appTheme.isRequired,
 };
 
