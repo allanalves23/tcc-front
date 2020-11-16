@@ -31,9 +31,9 @@ function Articles(props) {
   const [viewAll, setViewAll] = useState(false);
   const [articles, setArticles] = useState([]);
   const [query, setQuery] = useState('');
-  const [limit, setLimit] = useState(10);
-  const [count] = useState(0);
-  const [page, setPage] = useState(1);
+  const [count, setCount] = useState(0);
+  const [take, setTake] = useState(DEFAULT_LIMIT);
+  const [skip, setSkip] = useState(0);
   const [reload, setReload] = useState(true);
   const [createArticleDialog, setCreateArticleDialog] = useState(false);
 
@@ -144,19 +144,29 @@ function Articles(props) {
     }
   }
 
-  function changePage(futurePage) {
-    setPage(futurePage + 1);
+  function changeSkip(value) {
+    if (value) {
+      if (!take) {
+        setSkip(0);
+      } else {
+        const newSkip = value < (skip / take) ? (skip - take) : (skip + take);
+        setSkip(newSkip);
+      }
+    } else {
+      setSkip(0);
+    }
+
     setReload(true);
   }
 
-  function changeLimit(futureLimit) {
-    setLimit(futureLimit);
+  function changeTake(value) {
+    setTake(value);
     setReload(true);
   }
 
   function getBySearch(q) {
     setQuery(q);
-    setPage(1);
+    setSkip(0);
     setReload(true);
   }
 
@@ -193,10 +203,20 @@ function Articles(props) {
 
   useEffect(() => {
     const source = axios.CancelToken.source();
+    const sourceCount = axios.CancelToken.source();
+
+    async function getArticlesCount() {
+      const url = `/artigos/quantidade?termo=${query}&all=${viewAll}`;
+
+      await axios(url, { cancelToken: sourceCount.token })
+        .then((res) => {
+          setCount(res.data);
+        });
+    }
 
     async function getArticles() {
       try {
-        const url = `/artigos?termo=${query}&skip=${(page - 1) * limit}&take=${limit}&all=${viewAll}`;
+        const url = `/artigos?termo=${query}&skip=${skip}&take=${take}&all=${viewAll}`;
         setLoading(true);
 
         await axios(url, { cancelToken: source.token })
@@ -219,10 +239,11 @@ function Articles(props) {
     if (reload) {
       scrollToTop();
       getArticles();
+      getArticlesCount();
     }
 
     return () => source.cancel();
-  }, [articles, loading, count, page, limit, reload, error, query, viewAll]);
+  }, [articles, loading, skip, take, count, reload, error, query, viewAll]);
 
   return (
     <Container id="component">
@@ -236,22 +257,21 @@ function Articles(props) {
         <MaterialTable
           columns={getArticleListColumns()}
           data={articles}
-          totalCount={count}
           isLoading={loading}
-          page={page - 1}
-          onChangeRowsPerPage={changeLimit}
-          onChangePage={changePage}
+          totalCount={count}
+          onChangeRowsPerPage={changeTake}
+          onChangePage={changeSkip}
+          page={skip / take}
           onSearchChange={getBySearch}
           showFirstLastPageButtons={false}
           icons={{
             ResetSearch: () => (query ? <Icon color="action">clear</Icon> : ''),
-            FirstPage: () => <Icon color="action">first_page</Icon>,
             PreviousPage: () => <Icon color="action">chevron_left</Icon>,
             NextPage: () => <Icon color="action">chevron_right</Icon>,
-            LastPage: () => <Icon color="action">last_page</Icon>,
           }}
           options={{
             showTitle: false,
+            showFirstLastPageButtons: false,
             showTextRowsSelected: false,
             pageSize: DEFAULT_LIMIT,
             pageSizeOptions: OPTIONS_LIMIT,
@@ -271,8 +291,6 @@ function Articles(props) {
               searchPlaceholder: 'Titulo ou descrição',
             },
             pagination: {
-              lastTooltip: 'Última página',
-              firstTooltip: 'Primeira página',
               previousTooltip: 'Página anterior',
               nextTooltip: 'Próxima página',
               labelRowsSelect: 'Linhas',
