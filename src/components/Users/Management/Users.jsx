@@ -15,8 +15,6 @@ import {
   Box,
   LinearProgress,
   Typography,
-  IconButton,
-  Icon,
 } from '@material-ui/core';
 
 import { connect } from 'react-redux';
@@ -53,7 +51,6 @@ import {
   HudSearchBar,
   HudButtons,
   TableIcon,
-  TableOrder,
   TableWrapper,
   CustomLink,
 } from './styles';
@@ -66,11 +63,10 @@ function Users(props) {
   } = props;
 
   const [users, setUsers] = useState([]);
-  const [page, setPage] = useState(1);
+  const [skip, setSkip] = useState(0);
   const [count, setCount] = useState(0);
-  const [limit, setLimit] = useState(DEFAULT_LIMIT);
+  const [take, setTake] = useState(DEFAULT_LIMIT);
   const [query, setQuery] = useState('');
-  const [order, setOrder] = useState('desc');
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [userSelected, setUserSelected] = useState({});
@@ -82,20 +78,29 @@ function Users(props) {
 
   async function changeQueryValue(term) {
     setQuery(term);
-    setPage(1);
+    setSkip(0);
     setReload(true);
   }
 
-  function changePage(event, newPage) {
-    const p = newPage + 1;
-    setPage(p);
+  function changeSkip(event, page) {
+    if (page) {
+      if (!take) {
+        setSkip(0);
+      } else {
+        const newSkip = page < (skip / take) ? (skip - take) : (skip + take);
+        setSkip(newSkip);
+      }
+    } else {
+      setSkip(0);
+    }
+
     setReload(true);
   }
 
-  function defineLimit(event) {
+  function changeTake(event) {
     const { value } = event.target;
-    setLimit(value);
-
+    setTake(value);
+    setSkip(0);
     setReload(true);
   }
 
@@ -141,28 +146,31 @@ function Users(props) {
   function hideConfirmUserDialog(event) {
     const { removed, restored } = event;
     if (removed || restored) {
-      if (page > 1 && users.length === 1) {
-        setPage(page - 1);
-      }
-
+      setSkip(0);
+      setTake(DEFAULT_LIMIT);
       setReload(true);
     }
     setConfirmRemoveUserDialog(false);
     setConfirmRestoreUserDialog(false);
   }
 
-  function changeOrder() {
-    const newOrder = order === 'asc' ? 'desc' : 'asc';
-    setOrder(newOrder);
-    scrollToTop();
-    setReload(true);
-  }
-
   useEffect(() => {
+    const source = axios.CancelToken.source();
+    const sourceCount = axios.CancelToken.source();
+
+    async function getCountUsers() {
+      const url = `/usuarios/quantidade?termo=${query}`;
+
+      await axios(url, { cancelToken: sourceCount.token })
+        .then((res) => {
+          setCount(res.data);
+        });
+    }
+
     async function searchUsers() {
-      const url = `/usuarios?skip=${page - 1}&termo=${query}&take=${limit}`;
+      const url = `/usuarios?skip=${skip}&termo=${query}&take=${take}`;
       setLoading(true);
-      await axios(url).then((res) => {
+      await axios(url, { cancelToken: source.token }).then((res) => {
         setUsers(res.data);
       }).catch(() => {
         setError(true);
@@ -176,8 +184,9 @@ function Users(props) {
       setError(false);
       setReload(false);
       searchUsers();
+      getCountUsers();
     }
-  }, [reload, users, count, limit, error, page, query, order]);
+  }, [reload, users, count, skip, error, take, query]);
 
   return (
     <Container className="page">
@@ -248,22 +257,6 @@ function Users(props) {
             <TableWrapper>
               <Table>
                 <TableHead>
-                  <TableRow>
-                    <TableOrder theme={theme}>
-                      <Box display="flex" alignItems="center">
-                        <Typography component="p" variant="body2">
-                          Ordem:
-                        </Typography>
-                        <Box ml={1}>
-                          <IconButton onClick={changeOrder} size="small">
-                            <Icon color="action">
-                              {order === 'asc' ? 'arrow_upward' : 'arrow_downward'}
-                            </Icon>
-                          </IconButton>
-                        </Box>
-                      </Box>
-                    </TableOrder>
-                  </TableRow>
                   <TableRow>
                     <TableCell>
                       <Box display="flex" alignItems="center">
@@ -357,13 +350,12 @@ function Users(props) {
                       rowsPerPageOptions={OPTIONS_LIMIT}
                       colSpan={4}
                       count={count}
-                      rowsPerPage={limit}
+                      rowsPerPage={take}
                       labelRowsPerPage={LIMIT_LABEL}
                       labelDisplayedRows={DISPLAYED_ROWS}
-                      page={page - 1}
-                      onChangePage={changePage}
-
-                      onChangeRowsPerPage={defineLimit}
+                      page={skip / take}
+                      onChangePage={changeSkip}
+                      onChangeRowsPerPage={changeTake}
                     />
                   </TableRow>
                 </TableFooter>

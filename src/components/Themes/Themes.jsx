@@ -56,9 +56,9 @@ function Themes(props) {
   const [themes, setThemes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
+  const [count, setCount] = useState(0);
   const [skip, setSkip] = useState(0);
-  const [count] = useState(0);
-  const [limit, setLimit] = useState(DEFAULT_LIMIT);
+  const [take, setTake] = useState(DEFAULT_LIMIT);
   const [error, setError] = useState(false);
   const [themeSelected, setThemeSelected] = useState({});
   const [reload, setReload] = useState(true);
@@ -71,10 +71,26 @@ function Themes(props) {
     setReload(true);
   }
 
-  async function changeSkip(event, p) {
-    setSkip(p);
+  function changeSkip(event, page) {
+    if (page) {
+      if (!take) {
+        setSkip(0);
+      } else {
+        const newSkip = page < (skip / take) ? (skip - take) : (skip + take);
+        setSkip(newSkip);
+      }
+    } else {
+      setSkip(0);
+    }
+
     setReload(true);
-    scrollToTop();
+  }
+
+  function changeTake(event) {
+    const { value } = event.target;
+    setTake(value);
+    setSkip(0);
+    setReload(true);
   }
 
   function handleOpenForm(isOpen = false, succeeded = false) {
@@ -119,21 +135,24 @@ function Themes(props) {
     };
   }
 
-  async function defineLimit(event) {
-    const newLimit = parseInt(event.target.value, 10);
-
-    setLimit(newLimit);
-    setReload(true);
-  }
-
   useEffect(() => {
     const source = axios.CancelToken.source();
+    const sourceCount = axios.CancelToken.source();
+
+    async function getCountThemes() {
+      const url = `/temas/quantidade?termo=${query}`;
+
+      await axios(url, { cancelToken: sourceCount.token })
+        .then((res) => {
+          setCount(res.data);
+        });
+    }
 
     async function searchThemes() {
       try {
         setLoading(true);
 
-        const url = `/temas?skip=${skip}&termo=${query}&take=${limit}`;
+        const url = `/temas?skip=${skip}&termo=${query}&take=${take}`;
 
         await axios(url, { cancelToken: source.token }).then((res) => {
           setReload(false);
@@ -153,9 +172,10 @@ function Themes(props) {
     if (reload) {
       scrollToTop();
       searchThemes();
+      getCountThemes();
     }
     return () => source.cancel();
-  }, [skip, query, limit, loading, error, themes, reload]);
+  }, [skip, take, query, count, loading, error, themes, reload]);
 
   return (
     <Container id="component">
@@ -282,15 +302,15 @@ function Themes(props) {
                   rowsPerPageOptions={OPTIONS_LIMIT}
                   colSpan={3}
                   count={count}
-                  rowsPerPage={limit}
+                  rowsPerPage={take}
                   labelRowsPerPage={LIMIT_LABEL}
                   labelDisplayedRows={DISPLAYED_ROWS}
-                  page={skip}
+                  page={skip / take}
                   SelectProps={{
                     inputProps: { 'aria-label': 'Limite' },
                   }}
                   onChangePage={changeSkip}
-                  onChangeRowsPerPage={defineLimit}
+                  onChangeRowsPerPage={changeTake}
                 />
               </TableRow>
             </TableFooter>

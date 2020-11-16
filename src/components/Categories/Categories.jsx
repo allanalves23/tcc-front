@@ -55,7 +55,7 @@ function Categories(props) {
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
   const [skip, setSkip] = useState(0);
-  const [count] = useState(0);
+  const [count, setCount] = useState(0);
   const [take, setTake] = useState(DEFAULT_LIMIT);
   const [error, setError] = useState(false);
   const [categorySelected, setCategorySelected] = useState({});
@@ -69,10 +69,26 @@ function Categories(props) {
     setReload(true);
   }
 
-  async function changePage(event, p) {
-    setSkip(p);
+  function changeSkip(event, page) {
+    if (page) {
+      if (!take) {
+        setSkip(0);
+      } else {
+        const newSkip = page < (skip / take) ? (skip - take) : (skip + take);
+        setSkip(newSkip);
+      }
+    } else {
+      setSkip(0);
+    }
+
     setReload(true);
-    scrollToTop();
+  }
+
+  function changeTake(event) {
+    const { value } = event.target;
+    setTake(value);
+    setSkip(0);
+    setReload(true);
   }
 
   function handleOpenForm(isOpen = false, succeeded = false) {
@@ -115,15 +131,18 @@ function Categories(props) {
     setCategorySelected(newCategory);
   }
 
-  async function defineLimit(event) {
-    const newLimit = parseInt(event.target.value, 10);
-
-    setTake(newLimit);
-    setReload(true);
-  }
-
   useEffect(() => {
     const source = axios.CancelToken.source();
+    const sourceCount = axios.CancelToken.source();
+
+    async function getCountCategories() {
+      const url = `/categorias/quantidade?termo=${query}`;
+
+      await axios(url, { cancelToken: sourceCount.token })
+        .then((res) => {
+          setCount(res.data);
+        });
+    }
 
     async function searchCategories() {
       try {
@@ -149,6 +168,7 @@ function Categories(props) {
     if (reload) {
       scrollToTop();
       searchCategories();
+      getCountCategories();
     }
 
     return () => source.cancel();
@@ -294,14 +314,14 @@ function Categories(props) {
               <TableRow>
                 <TablePagination
                   rowsPerPageOptions={OPTIONS_LIMIT}
-                  colSpan={3}
+                  colSpan={4}
                   count={count}
                   rowsPerPage={take}
                   labelRowsPerPage={LIMIT_LABEL}
                   labelDisplayedRows={DISPLAYED_ROWS}
-                  page={skip}
-                  onChangePage={changePage}
-                  onChangeRowsPerPage={defineLimit}
+                  page={skip / take}
+                  onChangePage={changeSkip}
+                  onChangeRowsPerPage={changeTake}
                 />
               </TableRow>
             </TableFooter>
