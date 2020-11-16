@@ -44,6 +44,12 @@ export const GridPresentation = styled(Grid)({
   '& button': {
     margin: '0.6rem',
   },
+  [devices.laptopSmall]: {
+    backgroundSize: '100%',
+  },
+  '@media (max-width: 795px)': {
+    backgroundSize: 'auto 100%',
+  },
 });
 
 export const AuthSection = styled(Paper)({
