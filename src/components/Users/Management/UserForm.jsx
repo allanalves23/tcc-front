@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { reactRouterParams, userType } from '@/types';
+import { reactRouterParams } from '@/types';
 
 import { Redirect } from 'react-router-dom';
 
@@ -29,7 +29,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
-import { success, error, info } from '@/config/toasts';
+import { success, error } from '@/config/toasts';
 
 import Header from '@/components/Header.jsx';
 import PasswordField from '@/components/PasswordField.jsx';
@@ -51,7 +51,6 @@ function UserForm(props) {
   const {
     callToast,
     match,
-    user,
   } = props;
 
   const [userState, setUserState] = useState({});
@@ -62,18 +61,6 @@ function UserForm(props) {
   const [passwordDialog, setPasswordDialog] = useState(false);
   const [redirect, setRedirect] = useState(false);
 
-  function showConfirmRemoveUserDialog() {
-    if (saving || loading) return;
-
-    // The User logged is trying remove their own account
-    if (userState.id === user.userID) {
-      callToast(info("Para remover sua conta acesse a opção 'Meus dados' e 'Configurações'"));
-      return;
-    }
-
-    setConfirmRemoveUserDialog(true);
-  }
-
   function hideConfirmRemoveUserDialog(event) {
     const { removed } = event;
     setConfirmRemoveUserDialog(false);
@@ -81,11 +68,6 @@ function UserForm(props) {
     if (removed) {
       setTimeout(() => setRedirect(true), 500);
     }
-  }
-
-  function showSetPasswordDialog() {
-    if (saving || loading) return;
-    setPasswordDialog(true);
   }
 
   function hideSetPasswordDialog() {
@@ -217,10 +199,7 @@ function UserForm(props) {
           <Container>
             <UserFormHud
               save={save}
-              changePass={showSetPasswordDialog}
-              remove={showConfirmRemoveUserDialog}
               isSaving={saving}
-              user={userState}
             />
             <CustomGrid item xs={12}>
               <UserFormSection
@@ -329,14 +308,13 @@ function UserForm(props) {
 UserForm.propTypes = {
   callToast: PropTypes.func.isRequired,
   match: reactRouterParams,
-  user: userType.isRequired,
 };
 
 UserForm.defaultProps = {
   match: null,
 };
 
-const mapStateToProps = (state) => ({ toast: state.config, user: state.user });
+const mapStateToProps = (state) => ({ toast: state.config });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserForm);
