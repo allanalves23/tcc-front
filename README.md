@@ -4,6 +4,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-blue.svg?style=flat-square)](#contributors)
 ![license-BS3](https://img.shields.io/badge/license-BSD%203-green)
 [![Build status](https://dev.azure.com/allanalves23/allanalves23/_apis/build/status/TCC-FRONT)](https://dev.azure.com/allanalves23/allanalves23/_build/latest?definitionId=2)
+![Release status](https://vsrm.dev.azure.com/allanalves23/_apis/public/Release/badge/0a28a34f-5627-4ece-820c-b2d86e27cb5d/2/2)
 
 ## Trabalho de conclusão de curso - Instituição Unicarioca de Ensino Superior
 
