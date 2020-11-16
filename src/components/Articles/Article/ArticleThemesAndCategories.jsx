@@ -160,6 +160,7 @@ function ArticleThemesAndCategories(props) {
               value={theme}
               onChange={onChangeTheme}
               loadOptions={loadThemes}
+              searchMinLength={0}
               helperText={(
                 <Typography component="span" variant="caption">
                   Sem ideias? veja a lista de
@@ -176,6 +177,7 @@ function ArticleThemesAndCategories(props) {
                 value={category}
                 onChange={onChangeCategory}
                 loadOptions={loadCategories}
+                searchMinLength={0}
                 helperText={(
                   <Typography component="span" variant="caption">
                     Sem ideias? veja a lista de

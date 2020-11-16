@@ -20,6 +20,7 @@ function CustomAsyncSelect(props) {
     loadOptions,
     theme,
     disabled,
+    searchMinLength,
   } = props;
 
   const [mounted, setMounted] = useState(false);
@@ -31,7 +32,7 @@ function CustomAsyncSelect(props) {
   }
 
   function termLengthCriteria(term) {
-    return term && term.length >= 3;
+    return term && term.length >= searchMinLength;
   }
 
   function loadLocalOptions(term) {
@@ -73,9 +74,7 @@ function CustomAsyncSelect(props) {
         isDisabled={disabled}
         loadOptions={loadLocalOptions}
         onChange={changeValue}
-        noOptionsMessage={(event) => (event.inputValue.length >= 3
-          ? 'Nenhum resultado encontrado'
-          : 'Faça uma busca com pelo menos 3 caracteres')}
+        noOptionsMessage={() => 'Nenhum resultado encontrado'}
         loadingMessage={displayLoadingMessage}
         placeholder={placeholder}
       />
@@ -98,6 +97,7 @@ CustomAsyncSelect.propTypes = {
   label: PropTypes.string,
   helperText: PropTypes.node,
   disabled: PropTypes.bool,
+  searchMinLength: PropTypes.number,
 };
 
 CustomAsyncSelect.defaultProps = {
@@ -107,6 +107,7 @@ CustomAsyncSelect.defaultProps = {
   label: null,
   helperText: null,
   disabled: false,
+  searchMinLength: 3,
 };
 
 const mapStateToProps = (state) => ({ theme: state.theme });
