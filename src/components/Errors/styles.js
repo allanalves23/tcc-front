@@ -44,6 +44,7 @@ export const ErrorMsg = styled(Box)({
 export const ErrorFromDataContainer = styled(Box)({
   display: 'flex',
   flexDirection: 'row',
+  justifyContent: 'center',
   alignItems: 'center',
   padding: '2rem',
   [devices.tablet]: {
